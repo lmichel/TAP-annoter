@@ -4,6 +4,7 @@ Prototype of a TAP service able to bind stored data with an IVOA Data Model and 
 
 *Use-case Scenarios :*
 
-Server side 
-Client side
+   + Server side 
+
+   + Client side
 
