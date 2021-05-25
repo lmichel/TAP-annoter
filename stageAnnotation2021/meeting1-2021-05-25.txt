@@ -1,0 +1,76 @@
+calendrier  session 1
+2021/05/25/ François, Joann, Mireille
+
+Présentation des bases du CDS
+
+Simbad
+
+les metadonnées :
+angular position: ra, dec
+proper motion : variation in position
+radial velocity
+les references d'articles
+les noms variés pour un même objet
+ex: Polaris
+
+DSS survey, visu dans Aladin Lite de Polaris
+
+vizier
+catalog publiés dans les Journaux scientifiques
+ex J/ApJ/ catalogue publié dans
+
+REAdme = doc sur le catalog
+noms de colonnes = libre, proposé par l'auteur du catalog
+UCD : un tag semantique qui exprime la nature
+quantité physique, classe, flag, etc. du contenu de la colonne
+ra : longitude ref : endroit de passage du soleil a l équinoxe de printemps
+dec : latitude
+ref
+
+mag : un indice logarithmique de brillance
+typiquement [-2,30]
+
+Redshift :
+effet doppler : decalage de la lumière vers le rouge si l objet
+s'éloigne ou vers le bleu si'l s'approche
+z=delta(lambda)/lambda= v/c
+calculé à partir des raies d'émissions ou absorption dans le spectre
+électromagnétique.
+
+
+le format VOtable : on l utilise pour transporter les données
+c'est le format de réponse d'une requête a la base
+
+c'est du XML
+
+on décrit les colonnes de la table = Balise <FIELD>
+les syst de coordonnées en <COOSYS>
+<DATA>
+<TABLEDATA>la zone des données avec leur valeur
+
+on a montré ici l interface native de vizier , via hhtp et champs a remplir
+
+acces TAP
+c'est une autre façon d interroger la base
+
+on pose une requête dans un langage defini : ADQL : SQL variation
+
+Mapping :
+un modèle
+https://github.com/ivoa-std/MANGO
+une table résultat
+
+comment rajouter les informations qui expriment comment
+consommer les colonnes de la VOtable dans des objets du modèle
+
+exemple : gaia / ztf example
+comment construire une Time series par objet
+
+But du stage :
+Construire un mapping au vol en définissant des tables supplémentaires dans TAP
+
+notions a revoir , ou approfondir :
+- View sur une base de données SQL
+on utilise Postgres ici .
+-  TAP le principe--> cf doc in pdf
+ivoa.net/Documents/  section DAL  et autre repertoire des spec sur ce site
