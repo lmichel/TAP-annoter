@@ -1,3 +1,10 @@
 # TAP-annoter
 
-Prototype of a TAP service able to bind stored data with a DM and to annoate qury responses accordingly.
+Prototype of a TAP service able to bind stored data with an IVOA Data Model and to annotate query responses accordingly.
+
+*Use-case Scenarios :*
+
+   + Server side 
+
+   + Client side
+
