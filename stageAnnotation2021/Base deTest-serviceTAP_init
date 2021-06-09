@@ -11,6 +11,19 @@ a quel moment je pourrais utiliser le TAP schema de la base d’origine ?
 Vizier , xcatdb , etc …
 car les données des colonnes sont décrites a cet endroit 
 
+**Réponse FB**
+normalement tu peux avoir la description des tables en format xml en ajoutant /tables comme endpoint à la 
+fin de l'url racine du service.
+mais pour vizier si tu fais çà (http://tapvizier.u-strasbg.fr/tapvizier/tap/tables) tu n'obtiens que
+des listes de tables avec leur nom et leur <description> sans les colonnes
+Si tu veux les colonnes d'une table avec tous leurs attributs du TAP schema il faut aller sur l'interface ADQL
+du tapvizier (http://tapvizier.u-strasbg.fr/adql/) et tu interroges la table TAP_SCHEMA.colomns.
+il faut connaitre le nom du catalogue (par "select * from TAP_SCHEMA.tables" ou par l'interface natif de vizier) 
+et le mettre entre simple cotes. Pour 4xmm çà donne
+SELECT * FROM TAP_SCHEMA.columns where TAP_SCHEMA.coluns.table_name = 'IX/59/xmm4dr9s'
+
+J'ai pas trouvé de moyen plus simple. Demander à Gilles ?
+
 
 *VOtables intéressantes*  
 
