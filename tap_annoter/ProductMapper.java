@@ -16,8 +16,8 @@ public class ProductMapper {
 	private BufferedWriter out;
 	
 	public ProductMapper(String nom_du_fichier,BufferedWriter buffer) {
-		String jsonPath = nom_du_fichier;
-		BufferedWriter out = buffer;
+		this.jsonPath = nom_du_fichier;
+		this.out = buffer;
 	}
 
 	
