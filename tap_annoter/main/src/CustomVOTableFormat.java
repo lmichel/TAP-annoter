@@ -1,4 +1,4 @@
-package tap_annoter;
+package tap_annoter.main;
 
 import java.io.*;
 
@@ -14,7 +14,7 @@ import tap.TAPExecutionReport;
 import tap.formatter.VOTableFormat;
 import tap.metadata.TAPColumn;
 import tap.metadata.TAPCoosys;
-
+import tap_annoter.mapper.src.ProductMapper;
 import uk.ac.starlink.votable.DataFormat;
 import uk.ac.starlink.votable.VOSerializer;
 import uk.ac.starlink.votable.VOTableVersion;
@@ -67,7 +67,7 @@ public class CustomVOTableFormat extends VOTableFormat {
 		   ****************************************************************** */
 		
 		//Get the query to annotate or not
-		
+		String fileName = "config/vizier_grouped_col.mango.config.json";
 		String query = execReport.parameters.getQuery();
 		
 		// Set the root VOTABLE node:
@@ -80,8 +80,8 @@ public class CustomVOTableFormat extends VOTableFormat {
 		if (query.startsWith("SELECT * FROM column_grouping.column_grouping_table")) {
 			out.newLine();
 			out.write("<VODML>\n");
-			
-			ProductMapper mapper = new ProductMapper("/home/joann/Bureau/Stage/Git/vollt/src/tap_annoter/config/vizier_grouped_col.mango.config.json");
+			System.out.println(System.getProperty("user.dir")) ;
+			ProductMapper mapper = new ProductMapper("config/vizier_grouped_col.mango.config.json");
 			mapper.BuildAnnotations(out);
 			
 			/*

@@ -1,4 +1,4 @@
-package tap_annoter;
+package tap_annoter.mapper.src;
 
 import java.io.*;
 import java.util.HashMap;
