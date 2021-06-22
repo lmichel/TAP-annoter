@@ -42,8 +42,8 @@ public class CustomVOTableFormat extends VOTableFormat {
 	 *   ci-dessous sera appelé.
 	 */
 	public CustomVOTableFormat(final ServiceConnection service) throws NullPointerException {
-		super(service);                                             // Serialisation et version par défaut: BINARY et 1.3
-		//super(service, DataFormat.TABLEDATA);                     // Pour préciser une sérialisation différente
+		//super(service);                                             // Serialisation et version par défaut: BINARY et 1.3
+		super(service, DataFormat.TABLEDATA);                     // Pour préciser une sérialisation différente
 		//super(service, null, VOTableVersion.V12);                 // Serialisation par défaut (BINARY) et version précise
 		//super(service, DataFormat.TABLEDATA, VOTableVersion.V12); // Serialisation et version personnalisées
 		
@@ -76,14 +76,13 @@ public class CustomVOTableFormat extends VOTableFormat {
 		out.write("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
 		out.newLine();
 		out.write("<VOTABLE" + VOSerializer.formatAttribute("version", votVersion.getVersionNumber()) + VOSerializer.formatAttribute("xmlns", votVersion.getXmlNamespace()) + VOSerializer.formatAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance") + VOSerializer.formatAttribute("xsi:schemaLocation", votVersion.getXmlNamespace() + " " + votVersion.getSchemaLocation()) + ">");
-		out.newLine();
-		out.write(query);
-		if (query.equals("SELECT * FROM column_grouping.column_grouping_table;")) {
+		
+		if (query.startsWith("SELECT * FROM column_grouping.column_grouping_table")) {
 			out.newLine();
-			out.write("<VODML> ");
+			out.write("<VODML>\n");
 			
-			ProductMapper mapper = new ProductMapper("/home/joann/Bureau/Stage/Git/vollt/src/tap_annoter/vizier_grouped_col.mango.config.json",out);
-			mapper.BuildAnnotations();
+			ProductMapper mapper = new ProductMapper("/home/joann/Bureau/Stage/Git/vollt/src/tap_annoter/config/vizier_grouped_col.mango.config.json");
+			mapper.BuildAnnotations(out);
 			
 			/*
 			JSONParser jsonP = new JSONParser();
