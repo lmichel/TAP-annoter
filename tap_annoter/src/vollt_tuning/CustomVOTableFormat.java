@@ -1,10 +1,12 @@
-package tap_annoter.main;
+package vollt_tuning;
 
 import java.io.*;
-
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
+
 
 import adql.db.DBColumn;
 
@@ -14,7 +16,7 @@ import tap.TAPExecutionReport;
 import tap.formatter.VOTableFormat;
 import tap.metadata.TAPColumn;
 import tap.metadata.TAPCoosys;
-import tap_annoter.mapper.src.ProductMapper;
+import mapper.ProductMapper;
 import uk.ac.starlink.votable.DataFormat;
 import uk.ac.starlink.votable.VOSerializer;
 import uk.ac.starlink.votable.VOTableVersion;
@@ -67,12 +69,10 @@ public class CustomVOTableFormat extends VOTableFormat {
 		   ****************************************************************** */
 		
 		//Get the query to annotate or not
-		String fileName = "config/vizier_grouped_col.mango.config.json";
+		
 		String query = execReport.parameters.getQuery();
 		
 		// Set the root VOTABLE node:
-		out.write("Ceci est un VOTable trafiquée");
-		out.newLine();
 		out.write("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
 		out.newLine();
 		out.write("<VOTABLE" + VOSerializer.formatAttribute("version", votVersion.getVersionNumber()) + VOSerializer.formatAttribute("xmlns", votVersion.getXmlNamespace()) + VOSerializer.formatAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance") + VOSerializer.formatAttribute("xsi:schemaLocation", votVersion.getXmlNamespace() + " " + votVersion.getSchemaLocation()) + ">");
@@ -80,10 +80,26 @@ public class CustomVOTableFormat extends VOTableFormat {
 		if (query.startsWith("SELECT * FROM column_grouping.column_grouping_table")) {
 			out.newLine();
 			out.write("<VODML>\n");
-			System.out.println(System.getProperty("user.dir")) ;
-			ProductMapper mapper = new ProductMapper("config/vizier_grouped_col.mango.config.json");
-			mapper.BuildAnnotations(out);
 			
+
+			String fileName = "vizier_grouped_col.mango.config.json";
+			
+			 URL resource = getClass().getClassLoader().getResource(fileName);
+			 
+			 if (resource == null) {
+				 System.out.println("Fichier indisponible");
+			 }
+			 else {
+				 try {
+					File ourFile = new File(resource.toURI());
+					ProductMapper mapper = new ProductMapper(ourFile);
+					mapper.BuildAnnotations(out);
+					
+				} catch (URISyntaxException e) {
+					e.printStackTrace();
+				}
+			 }
+
 			/*
 			JSONParser jsonP = new JSONParser();
 			try {
@@ -175,6 +191,6 @@ public class CustomVOTableFormat extends VOTableFormat {
 
 		out.flush();
 	}
-
 }
+
 

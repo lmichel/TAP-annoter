@@ -1,0 +1,14 @@
+<Context> 
+
+	<Resource name="jdbc/tapdb" auth="Container"
+	    description="Datasource to the TAP database."
+		type="javax.sql.DataSource"
+		driverClassName="org.postgresql.Driver"
+ 
+		url="jdbc:postgresql:base_tap"
+		username="tap_user" password="pass"
+        
+        maxActive="100"
+        maxWaitMillis="2000" />
+
+</Context>

@@ -1,4 +1,4 @@
-package tap_annoter;
+package mapper;
 
 import java.io.*;
 import java.util.HashMap;
@@ -10,15 +10,23 @@ import org.json.simple.parser.ParseException;
 
 import tap.TAPException;
 
+/**
+ * @author joann
+ *
+ */
 public class ProductMapper {
 
-	private String jsonPath;
+	private File jsonFile;
 	
-	public ProductMapper(String nom_du_fichier) {
-		this.jsonPath = nom_du_fichier;
+	public ProductMapper(File theFile) {
+		this.jsonFile = theFile;
 	}
 
 	
+	/**
+	 * @param out
+	 * @throws IOException
+	 */
 	public void BuildAnnotations(BufferedWriter out) throws IOException {
 		
 		JSONParser jsonP = new JSONParser();
@@ -26,7 +34,7 @@ public class ProductMapper {
 		
 		try {
 			 //On récupère le fichier json pour le parser
-	         JSONObject jsonO = (JSONObject) jsonP.parse(new FileReader(jsonPath));
+	         JSONObject jsonO = (JSONObject) jsonP.parse(new FileReader(jsonFile));
 	     
 	         JSONArray parametersList = (JSONArray) jsonO.get("parameters");
 	         
@@ -83,7 +91,7 @@ public class ProductMapper {
 	        	 }
 	        	 
 	        	 else if ((our_measure.get("measure").equals("HardnessRatio"))) {
-	        		 out.write("HardnessRation found");
+	        		 out.write("HardnessRatio found");
 	        		 out.newLine();
 	        		 System.out.println("HardnessRatio found");
 	        	 }
@@ -111,7 +119,7 @@ public class ProductMapper {
 	      } finally { 
 			out.write("</VODML>");
 			out.newLine();
-	    	System.out.println("Finnaly");
+	    	System.out.println("Finally");
 			}
 		
 	}
