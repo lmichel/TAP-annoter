@@ -1,6 +1,8 @@
 package mapper;
 
 import java.io.*;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -9,6 +11,8 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import tap.TAPException;
+
+import utils.FileGetter;
 
 /**
  * @author joann
@@ -30,7 +34,6 @@ public class ProductMapper {
 	public void BuildAnnotations(BufferedWriter out) throws IOException {
 		
 		JSONParser jsonP = new JSONParser();
-		System.out.println("Salut");
 		
 		try {
 			 //On récupère le fichier json pour le parser
@@ -48,27 +51,56 @@ public class ProductMapper {
 	        	 JSONObject our_measure = (JSONObject) paramIter.next();
 	        	 
 	        	 if (((our_measure.get("measure")).toString().equals("LonLatSkyPositionEllErr"))) {
-	        		 out.write("LonLatSkyPositionEllErr found");
-	        		 out.newLine();
+	        		 
+	        		 try {
+	     				File mangoFile = new FileGetter("mango.LonLatSkyPosition_ellerr.mapping.xml").GetFile();
+	     				LonLatSkyPositionEllErrAppender appender = new LonLatSkyPositionEllErrAppender(our_measure,mangoFile);
+	     				appender.AppendLonLatSkyPositionEllErr(out);
+	     			} catch (URISyntaxException e1) {
+	     				System.out.println("File doesn't exist");
+	     				e1.printStackTrace();
+	     			}
+	        		 
 	        		 System.out.println("LonLatSkyPosEllErr");
 	        	 }
 	        	 
 	        	 
 	        	 else if ((our_measure.get("measure").equals("LonLatSkyPosition"))) {
-	        		 out.write("LonLatSkyPosition found");
-	        		 out.newLine();
+	        		 
+	        		 try {
+		     				File mangoFile = new FileGetter("mango.LonLatSkyPosition.mapping.xml").GetFile();
+		     				LonLatSkyPositionAppender appender = new LonLatSkyPositionAppender(our_measure,mangoFile);
+		     				appender.AppendLonLatSkyPosition(out);
+		     			} catch (URISyntaxException e1) {
+		     				System.out.println("File doesn't exist");
+		     				e1.printStackTrace();
+		     			}
 	        		 System.out.println("LonlatSkyPos found");
 	        	 }
 	        	 
 	        	 else if ((our_measure.get("measure").equals("Position"))) {
-	        		 out.write("Position found");
-	        		 out.newLine();
+	        		 
+	        		 try {
+		     				File mangoFile = new FileGetter("mango.Position.mapping.xml").GetFile();
+		     				PositionAppender appender = new PositionAppender(our_measure,mangoFile);
+		     				appender.AppendPosition(out);
+		     			} catch (URISyntaxException e1) {
+		     				System.out.println("File doesn't exist");
+		     				e1.printStackTrace();
+		     			}
 	        		 System.out.println("Position found");
 	        	 }
 	        	 
 	        	 else if ((our_measure.get("measure").equals("ProperMotion"))) {
-	        		 out.write("ProperMotion found");
-	        		 out.newLine();
+	        		 
+	        		 try {
+		     				File mangoFile = new FileGetter("mango.ProperMotion.mapping.xml").GetFile();
+		     				ProperMotionAppender appender = new ProperMotionAppender(our_measure,mangoFile);
+		     				appender.AppendProperMotion(out);
+		     			} catch (URISyntaxException e1) {
+		     				System.out.println("File doesn't exist");
+		     				e1.printStackTrace();
+		     			}
 	        		 System.out.println("ProperMotion found");
 	        	 }
 	        	 
@@ -79,32 +111,70 @@ public class ProductMapper {
 	        	 }
 	        	 
 	        	 else if ((our_measure.get("measure").equals("Photometry"))) {
-	        		 out.write("Photometry found");
-	        		 out.newLine();
+	        		 
+	        		 try {
+		     				File mangoFile = new FileGetter("mango.Photometry.mapping.xml").GetFile();
+		     				PhotometryAppender appender = new PhotometryAppender(our_measure,mangoFile);
+		     				appender.AppendPhotometry(out);
+		     			} catch (URISyntaxException e1) {
+		     				System.out.println("File doesn't exist");
+		     				e1.printStackTrace();
+		     			}
 	        		 System.out.println("Photometry found");
 	        	 }
 	        	 
 	        	 else if ((our_measure.get("measure").equals("GenericMeasure"))) {
-	        		 out.write("GenericMeasure found");
-	        		 out.newLine();
+	        		 
+	        		 try {
+	        			 	System.out.println("Coucou");
+		     				File mangoFile = new FileGetter("mango.GenericMeasure.mapping.xml").GetFile();
+		     				System.out.println("file done");
+		     				GenericMeasureAppender appender = new GenericMeasureAppender(our_measure,mangoFile);
+		     				appender.AppendGenericMeasure(out);
+		     			} catch (URISyntaxException e1) {
+		     				System.out.println("File doesn't exist");
+		     				e1.printStackTrace();
+		     			}
 	        		 System.out.println("GenericMeasure found");
 	        	 }
 	        	 
 	        	 else if ((our_measure.get("measure").equals("HardnessRatio"))) {
-	        		 out.write("HardnessRatio found");
-	        		 out.newLine();
+	        		 
+	        		 try {
+		     				File mangoFile = new FileGetter("mango.HardnessRatio.mapping.xml").GetFile();
+		     				HardnessRatioAppender appender = new HardnessRatioAppender(our_measure,mangoFile);
+		     				appender.AppendHardnessRatio(out);
+		     				
+		     			} catch (URISyntaxException e1) {
+		     				System.out.println("File doesn't exist");
+		     				e1.printStackTrace();
+		     			}
 	        		 System.out.println("HardnessRatio found");
 	        	 }
 	        	 
 	        	 else if ((our_measure.get("measure").equals("DetectionFlag"))) {
-	        		 out.write("DetectionFlag found");
-	        		 out.newLine();
-	        		 System.out.println("DetectionFlag found");
+	        		 
+	        		 try {
+		     				File mangoFile = new FileGetter("mango.DetectionFlag.mapping.xml").GetFile();
+		     				DetectionFlagAppender appender = new DetectionFlagAppender(our_measure,mangoFile);
+		     				appender.AppendDetectionFlag(out);
+		     			} catch (URISyntaxException e1) {
+		     				System.out.println("File doesn't exist");
+		     				e1.printStackTrace();
+		     			}
+
 	        	 }
 	        	 
 	        	 else if ((our_measure.get("measure").equals("MJD"))) {
-	        		 out.write("MJD found");
-	        		 out.newLine();
+	        		 
+	        		 try {
+		     				File mangoFile = new FileGetter("mango.MJD.mapping.xml").GetFile();
+		     				MJDAppender appender = new MJDAppender(our_measure,mangoFile);
+		     				appender.AppendMJD(out);
+		     			} catch (URISyntaxException e1) {
+		     				System.out.println("File doesn't exist");
+		     				e1.printStackTrace();
+		     			}
 	        		 System.out.println("MJD found");
 	        	 }
 	        	 

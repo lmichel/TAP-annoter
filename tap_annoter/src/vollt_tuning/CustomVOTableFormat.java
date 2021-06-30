@@ -20,6 +20,7 @@ import mapper.ProductMapper;
 import uk.ac.starlink.votable.DataFormat;
 import uk.ac.starlink.votable.VOSerializer;
 import uk.ac.starlink.votable.VOTableVersion;
+import utils.FileGetter;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -81,24 +82,21 @@ public class CustomVOTableFormat extends VOTableFormat {
 			out.newLine();
 			out.write("<VODML>\n");
 			
-
 			String fileName = "vizier_grouped_col.mango.config.json";
+			FileGetter getter = new FileGetter(fileName);
 			
-			 URL resource = getClass().getClassLoader().getResource(fileName);
-			 
-			 if (resource == null) {
-				 System.out.println("Fichier indisponible");
-			 }
-			 else {
-				 try {
-					File ourFile = new File(resource.toURI());
-					ProductMapper mapper = new ProductMapper(ourFile);
-					mapper.BuildAnnotations(out);
-					
-				} catch (URISyntaxException e) {
-					e.printStackTrace();
-				}
-			 }
+			try {
+				File jsonFile = getter.GetFile();
+				ProductMapper mapper = new ProductMapper(jsonFile);
+				mapper.BuildAnnotations(out);
+			} catch (URISyntaxException e1) {
+				System.out.println("File doesn't exist");
+				e1.printStackTrace();
+			}
+			
+			finally {
+				out.write("</VODML>");
+			}
 
 			/*
 			JSONParser jsonP = new JSONParser();
