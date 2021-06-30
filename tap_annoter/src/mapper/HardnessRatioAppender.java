@@ -19,4 +19,8 @@ public class HardnessRatioAppender {
 	public void AppendHardnessRatio(BufferedWriter out) {
 		
 	}
+
+	public void AppendGlobalsHardnessRatio(BufferedWriter out) {
+
+	}
 }

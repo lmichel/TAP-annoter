@@ -19,4 +19,8 @@ public class MJDAppender {
 		
 	}
 
+	public void AppendGlobalsMJD(BufferedWriter out) {
+
+	}
+
 }

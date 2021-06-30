@@ -19,5 +19,9 @@ public class PositionAppender {
 	public void AppendPosition(BufferedWriter out) {
 		
 	}
+
+	public void AppendGlobalsPosition(BufferedWriter out) {
+
+	}
 }
 

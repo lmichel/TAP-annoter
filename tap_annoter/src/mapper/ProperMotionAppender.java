@@ -18,4 +18,8 @@ public class ProperMotionAppender {
 	public void AppendProperMotion(BufferedWriter out) {
 		
 	}
+
+	public void AppendGlobalsProperMotion(BufferedWriter out) {
+
+	}
 }

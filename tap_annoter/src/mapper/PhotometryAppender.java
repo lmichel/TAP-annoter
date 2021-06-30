@@ -21,4 +21,8 @@ public class PhotometryAppender {
 		
 	}
 
+	public void AppendGlobalsPhotometry(BufferedWriter out) {
+		
+	}
+
 }

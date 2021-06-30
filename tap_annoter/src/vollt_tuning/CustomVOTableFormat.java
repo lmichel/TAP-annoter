@@ -77,8 +77,11 @@ public class CustomVOTableFormat extends VOTableFormat {
 		out.write("<?xml version=\"1.0\" encoding=\"utf-8\"?>");
 		out.newLine();
 		out.write("<VOTABLE" + VOSerializer.formatAttribute("version", votVersion.getVersionNumber()) + VOSerializer.formatAttribute("xmlns", votVersion.getXmlNamespace()) + VOSerializer.formatAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance") + VOSerializer.formatAttribute("xsi:schemaLocation", votVersion.getXmlNamespace() + " " + votVersion.getSchemaLocation()) + ">");
+		out.newLine();
 		
 		if (query.startsWith("SELECT * FROM column_grouping.column_grouping_table")) {
+			
+			out.write("<MODEL_INSTANCE name=\"MANGO\" syntax=\"ModelInstanceInVot\" >");
 			out.newLine();
 			out.write("<VODML>\n");
 			
@@ -88,6 +91,7 @@ public class CustomVOTableFormat extends VOTableFormat {
 			try {
 				File jsonFile = getter.GetFile();
 				ProductMapper mapper = new ProductMapper(jsonFile);
+				mapper.setGlobals(out);
 				mapper.BuildAnnotations(out);
 			} catch (URISyntaxException e1) {
 				System.out.println("File doesn't exist");
@@ -96,32 +100,9 @@ public class CustomVOTableFormat extends VOTableFormat {
 			
 			finally {
 				out.write("</VODML>");
+				out.newLine();
 			}
 
-			/*
-			JSONParser jsonP = new JSONParser();
-			try {
-		         JSONObject jsonO = (JSONObject)jsonP.parse(new FileReader("/home/joann/Bureau/Stage/Git/vollt/src/tap_annoter/essai.json"));
-		     
-		         String name = (String) jsonO.get("name");
-		         String age = (String) jsonO.get("age");
-		         String address = (String) jsonO.get("address");
-		         
-		         out.newLine();
-		         out.write("Je m'appelle " + name + " j'ai " + age + " ans et j'habite à " + address);
-		         out.newLine();
-		      } catch (FileNotFoundException e) {
-		         e.printStackTrace();
-		      } catch (IOException e) {
-		         e.printStackTrace();
-		      } catch (ParseException e) {
-		         e.printStackTrace();
-		      } finally { 
-				out.write("</VODML>");
-				out.newLine();
-				} 
-			*/
-			
 		}
 	
 		out.newLine();

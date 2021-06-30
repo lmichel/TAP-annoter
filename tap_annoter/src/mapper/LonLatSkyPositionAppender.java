@@ -19,4 +19,8 @@ public class LonLatSkyPositionAppender {
 	public void AppendLonLatSkyPosition(BufferedWriter out) {
 		
 	}
+
+	public void AppendGlobalsLonLatSkyPosition(BufferedWriter out) {
+
+	}
 }
