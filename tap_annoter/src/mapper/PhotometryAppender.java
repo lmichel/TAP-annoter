@@ -4,6 +4,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 
 import org.json.simple.JSONObject;
+import org.w3c.dom.traversal.TreeWalker;
 
 public class PhotometryAppender {
 
@@ -17,7 +18,7 @@ public class PhotometryAppender {
 		// TODO Auto-generated constructor stub
 	}
 	
-	public void AppendPhotometry(BufferedWriter out) {
+	public void AppendPhotometry(BufferedWriter out, TreeWalker walker) {
 		
 	}
 

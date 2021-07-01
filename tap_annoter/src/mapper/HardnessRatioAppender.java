@@ -3,6 +3,7 @@ package mapper;
 import java.io.*;
 
 import org.json.simple.JSONObject;
+import org.w3c.dom.traversal.TreeWalker;
 
 public class HardnessRatioAppender {
 
@@ -16,7 +17,7 @@ public class HardnessRatioAppender {
 		
 	}
 	
-	public void AppendHardnessRatio(BufferedWriter out) {
+	public void AppendHardnessRatio(BufferedWriter out, TreeWalker walker) {
 		
 	}
 

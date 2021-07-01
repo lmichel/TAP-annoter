@@ -5,14 +5,28 @@ import java.net.URISyntaxException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
 import org.json.simple.*;
+import org.w3c.dom.*;
+import org.w3c.dom.traversal.*;
+import org.xml.sax.SAXException;
 
 import utils.FileGetter;
+import utils.WalkerGetter;
+
 
 public class DetectionFlagAppender {
 
 	private JSONObject ourMeasure;
 	private File mangoFile;
+	private String ucd;
+	private String semantic;
+	private String description;
+	private String frame;
+	private String coordValue;
 	
 	public DetectionFlagAppender(JSONObject json, File mango) {
 		
@@ -20,102 +34,119 @@ public class DetectionFlagAppender {
 			this.mangoFile = mango;
 	}
 	
-	public void AppendDetectionFlag(BufferedWriter out) {
+	public TreeWalker AppendDetectionFlag(BufferedWriter out, TreeWalker walker) {
+		
+		GetParameters();
+		
+		//checking globals and putting them if needed
+		if (!AreGlobalsSet(walker)) {
+			walker = setGlobal(walker);
+		}
+		
+		WalkerGetter getter = new WalkerGetter(mangoFile);
+		TreeWalker mangoWalker = getter.getWalker();
+		mangoWalker.getRoot();
+		
+		while (!((((Element) mangoWalker.getCurrentNode()).getTagName()).equals("TABLE_MAPPING"))) {
+			mangoWalker.nextNode(); //putting mangoWalker to the right place
+		}
+		
+		mangoWalker.firstChild(); //we are at <INSTANCE dmrole="root" dmtype="mango:stcextend.Flag">
+		
+		while (mangoWalker.getCurrentNode()!=null) {
+			Node currentNode = mangoWalker.nextNode();
+			Element currentElement = (Element) currentNode;
+			String currentdmrole = currentElement.getAttribute("dmrole");
+			
+			//updating values
+			if (currentdmrole.equals("mango:Parameter.semantic")) currentElement.setAttribute("value", semantic);
+			else if (currentdmrole.equals("mango:Parameter.ucd")) currentElement.setAttribute("value", ucd);
+			else if (currentdmrole.equals("mango:Parameter.description")) currentElement.setAttribute("value", description);
+			else if (currentdmrole.equals("mango:stcextend.FlagCoord.coord")) currentElement.setAttribute("ref",coordValue);
+			else if (currentdmrole.equals("coords:Coordinate.coordSys")) currentElement.setAttribute("dmref","StatusFrame_"+frame);
+		}
+		
+		mangoWalker.getRoot();
+		
+		while (!((((Element) mangoWalker.getCurrentNode()).getTagName()).equals("TABLE_MAPPING"))) {
+			mangoWalker.nextNode(); //putting mangoWalker to the right place again
+		}
+		
+		mangoWalker.firstChild(); //we are at <INSTANCE dmrole="root" dmtype="mango:stcextend.Flag">
+		
+		while (!(((Element)(walker.getCurrentNode())).getAttribute("dmrole")).equals("mango:MangoObject.parameters")) {
+			walker.nextNode();
+		}
+		
+		Node newChild = mangoWalker.getCurrentNode();
+		Node nodeToModify = walker.getCurrentNode();
+		nodeToModify.appendChild(newChild);
+		walker.getRoot();
+		return(walker);
+	}
+
+	public void GetParameters() {
 		
 		System.out.println("Getting parameters");
-		String ucd = (String) ourMeasure.get("ucd");
+		this.ucd = (String) ourMeasure.get("ucd");
 		System.out.println("ucd : " + ucd);
-		String semantic = (String) ourMeasure.get("semantic");
+		this.semantic = (String) ourMeasure.get("semantic");
 		System.out.println("semantic : " + semantic);
-		String description = (String) ourMeasure.get("description");
+		this.description = (String) ourMeasure.get("description");
 		System.out.println("description : " + description);
 		JSONObject frames = (JSONObject) ourMeasure.get("frame");
 		System.out.println("Got frame");
-		String frame = (String) frames.get("frame");
+		this.frame = (String) frames.get("frame");
 		System.out.println("frame : " + frame);
 		JSONObject coordinate = (JSONObject) ourMeasure.get("coordinate");
 		System.out.println("Got coordinate");
-		String value = (String) coordinate.get("value");
-		value = value.replace("@", "");
-		System.out.println("value :" + value);
+		this.coordValue = (String) coordinate.get("value");
+		coordValue = coordValue.replace("@", "");
+		System.out.println("value :" + coordValue);
 		
-		int count = 0;
-		
-		try (BufferedReader content = new BufferedReader(new FileReader (mangoFile))) {
-			
-			   String line;
-
-			   System.out.println("Writing");
-			   
-			   while ((line = content.readLine()) != null) {
-
-				    Pattern pattern = Pattern.compile("@@@@@", Pattern.CASE_INSENSITIVE);
-				    Matcher matcher = pattern.matcher(line);
-				    boolean matchFound = matcher.find();
-				    
-				    if (matchFound) {
-				    	int start = matcher.start();
-				    	int end = matcher.end() + 1;
-				    	StringBuilder myLine = new StringBuilder(line);
-				    	
-				    	if(count==7) myLine.replace(start,end,semantic);
-				    	if (count==9) myLine.replace(start, end,ucd);
-				    	if (count==11) myLine.replace(start,end, description);
-
-				    	if (count==18) myLine.replace(start,end, value);
-				    	if (count==20) myLine.replace(start,end,frame);
-				    	
-				    	out.write(myLine.toString());
-				    	out.newLine();
-				    }
-				   else if (count != 0 && count != 1){
-					   out.write(line);
-					   out.newLine();
-				   }
-				   count +=1;
-			   }
-			   
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 		
 	}
-
-	public void AppendGlobalsDetectionFlag(BufferedWriter out) throws IOException, URISyntaxException {
+	
+	public boolean AreGlobalsSet(TreeWalker walker) {
 		
-		JSONObject frames = (JSONObject) ourMeasure.get("frame");
-		System.out.println("Got frame for globals");
-		String frame = (String) frames.get("frame");
-		System.out.println("frame : " + frame);
+		walker.getRoot();
+		Node ourGlobals = walker.firstChild();
+		NodeList nodeList = ourGlobals.getChildNodes();
+		int nodeNumber = nodeList.getLength();
+		
+		if (nodeNumber==0) return false;
+		
+		else {
+			for (int i=0;i<nodeNumber;i++) {
+				
+				Node currentNode = nodeList.item(i);
+				Element currentElement = (Element) currentNode;
+				String ourFrame = currentElement.getAttribute("ID");
+				
+				if (ourFrame.equals("StatusFrame_"+frame)) return true;
+			}
+		}
+		
+		return false;
+	}
+	
+	public TreeWalker setGlobal(TreeWalker walker) {
 		
 		FileGetter getter = new FileGetter("mango.frame."+frame+".xml");
-		File frameFile = getter.GetFile();
-		
-		try (BufferedReader content = new BufferedReader(new FileReader (frameFile))) {
-			
-			   String line;
 
-			   System.out.println("Writing globals");
-			   
-			   while ((line = content.readLine()) != null) {
-				   out.write(line);
-				   out.newLine();
-			   }
-			   
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+		try {
+			File frameFile = getter.GetFile();
+			WalkerGetter gettingWalker = new WalkerGetter(frameFile);
+			TreeWalker frameWalker = gettingWalker.getWalker();
+		    walker.firstChild().appendChild(frameWalker.getRoot());
+		    return(walker);
+			
+		} catch (URISyntaxException e) {
 			e.printStackTrace();
 		}
-			   
 
-
+		return null;
+	    
 	}
 }
 

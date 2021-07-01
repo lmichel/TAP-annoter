@@ -4,6 +4,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 
 import org.json.simple.JSONObject;
+import org.w3c.dom.traversal.TreeWalker;
 
 public class MJDAppender {
 	
@@ -15,7 +16,7 @@ public class MJDAppender {
 		this.mangoFile = mango;
 	}
 	
-	public void AppendMJD(BufferedWriter out) {
+	public void AppendMJD(BufferedWriter out, TreeWalker walker) {
 		
 	}
 

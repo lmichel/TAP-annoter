@@ -4,6 +4,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 
 import org.json.simple.JSONObject;
+import org.w3c.dom.traversal.TreeWalker;
 
 public class LonLatSkyPositionAppender {
 	
@@ -16,7 +17,7 @@ public class LonLatSkyPositionAppender {
 		
 	}
 	
-	public void AppendLonLatSkyPosition(BufferedWriter out) {
+	public void AppendLonLatSkyPosition(BufferedWriter out, TreeWalker walker) {
 		
 	}
 

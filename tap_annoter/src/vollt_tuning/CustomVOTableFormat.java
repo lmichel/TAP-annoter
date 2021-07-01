@@ -7,6 +7,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
 
 import adql.db.DBColumn;
 
@@ -21,10 +23,13 @@ import uk.ac.starlink.votable.DataFormat;
 import uk.ac.starlink.votable.VOSerializer;
 import uk.ac.starlink.votable.VOTableVersion;
 import utils.FileGetter;
+import utils.WalkerGetter;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.w3c.dom.*;
+import org.w3c.dom.traversal.*;
 
 public class CustomVOTableFormat extends VOTableFormat {
 
@@ -81,23 +86,25 @@ public class CustomVOTableFormat extends VOTableFormat {
 		
 		if (query.startsWith("SELECT * FROM column_grouping.column_grouping_table")) {
 			
-			out.write("<MODEL_INSTANCE name=\"MANGO\" syntax=\"ModelInstanceInVot\" >");
-			out.newLine();
 			out.write("<VODML>\n");
 			
 			String fileName = "vizier_grouped_col.mango.config.json";
 			FileGetter getter = new FileGetter(fileName);
-			
-			try {
-				File jsonFile = getter.GetFile();
-				ProductMapper mapper = new ProductMapper(jsonFile);
-				mapper.setGlobals(out);
-				mapper.BuildAnnotations(out);
-			} catch (URISyntaxException e1) {
-				System.out.println("File doesn't exist");
-				e1.printStackTrace();
-			}
-			
+
+		    try {
+		      FileGetter templateGetter = new FileGetter("mango.mapping.xml");
+		      File mangoTemplate = templateGetter.GetFile();
+		      System.out.println("Template loaded correctly");
+		      WalkerGetter templateWalker = new WalkerGetter(mangoTemplate);
+		      TreeWalker walker = templateWalker.getWalker();
+			  File jsonFile = getter.GetFile();
+			  ProductMapper mapper = new ProductMapper(jsonFile);
+			  walker.getRoot();
+			  mapper.BuildAnnotations(out,walker);
+
+		    } catch (Exception e) {
+		      e.printStackTrace();
+		    }	
 			finally {
 				out.write("</VODML>");
 				out.newLine();

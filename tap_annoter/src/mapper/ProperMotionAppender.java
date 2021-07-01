@@ -4,6 +4,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 
 import org.json.simple.JSONObject;
+import org.w3c.dom.traversal.TreeWalker;
 
 public class ProperMotionAppender {
 
@@ -15,7 +16,7 @@ public class ProperMotionAppender {
 		this.mangoFile = mango;
 	}
 	
-	public void AppendProperMotion(BufferedWriter out) {
+	public void AppendProperMotion(BufferedWriter out, TreeWalker walker) {
 		
 	}
 

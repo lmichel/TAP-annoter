@@ -4,6 +4,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 
 import org.json.simple.JSONObject;
+import org.w3c.dom.traversal.TreeWalker;
 
 public class LonLatSkyPositionEllErrAppender {
 
@@ -16,7 +17,7 @@ public class LonLatSkyPositionEllErrAppender {
 		this.mangoFile = mango;
 	}
 	
-	public void AppendLonLatSkyPositionEllErr(BufferedWriter out) {
+	public void AppendLonLatSkyPositionEllErr(BufferedWriter out, TreeWalker walker) {
 		
 	}
 
