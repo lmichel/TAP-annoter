@@ -1,15 +1,11 @@
 package vollt_tuning;
 
 import java.io.*;
-import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
+
 import javax.xml.transform.*;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
@@ -28,14 +24,9 @@ import uk.ac.starlink.votable.VOSerializer;
 import uk.ac.starlink.votable.VOTableVersion;
 import utils.FileGetter;
 import utils.TreeWalkerMover;
-import utils.WalkerGetter;
 
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import org.w3c.dom.*;
 import org.w3c.dom.traversal.*;
-import org.xml.sax.SAXException;
 
 public class CustomVOTableFormat extends VOTableFormat {
 
@@ -92,6 +83,7 @@ public class CustomVOTableFormat extends VOTableFormat {
 		
 		if (query.startsWith("SELECT * FROM column_grouping.column_grouping_table")) {
 			
+			//starting the mapping block
 			out.write("<VODML>\n");
 			
 			String fileName = "vizier_grouped_col.mango.config.json";
@@ -114,13 +106,14 @@ public class CustomVOTableFormat extends VOTableFormat {
 			  ProductMapper mapper = new ProductMapper(jsonFile);
 			  walker.getRoot();
 			  mapper.BuildAnnotations(out,walker,templateDoc);
-			  String finalString = xmlToString(templateDoc);
+			  String finalString = xmlToString(templateDoc); //converting the doc to a string to push it in the buffer
 			  out.write(finalString);
 
 		    } catch (Exception e) {
 		      e.printStackTrace();
 		    }	
 			finally {
+				//closing the mapping block
 				out.write("</VODML>");
 				out.newLine();
 			}
@@ -193,6 +186,12 @@ public class CustomVOTableFormat extends VOTableFormat {
 		out.flush();
 	}
 	
+	/**
+	 * @param doc the document to convert
+	 * @return a string that matches the content of the document
+	 * 
+	 * This method is used to convert an xml Document to a String
+	 */
 	public static String xmlToString(Document doc) {
 	    String xmlString = null;
 	    try {

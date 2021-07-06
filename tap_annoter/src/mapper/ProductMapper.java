@@ -2,24 +2,16 @@ package mapper;
 
 import java.io.*;
 import java.net.URISyntaxException;
-import java.net.URL;
-import java.util.HashMap;
 import java.util.Iterator;
 
-import javax.xml.parsers.*;
 
 import org.json.simple.*;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.w3c.dom.*;
-import org.w3c.dom.traversal.*;
-
-import tap.TAPException;
 
 import utils.FileGetter;
 import utils.TreeWalkerMover;
-
-import org.apache.xerces.parsers.*;
 
 /**
  * @author joann
@@ -29,8 +21,11 @@ public class ProductMapper {
 
 	private File jsonFile;
 	
-	public ProductMapper(File theFile) {
-		this.jsonFile = theFile;
+	/**
+	 * @param file the json config file
+	 */
+	public ProductMapper(File file) {
+		this.jsonFile = file;
 	}
 
 	
@@ -44,14 +39,14 @@ public class ProductMapper {
 		JSONParser jsonP = new JSONParser();
 		
 		try {
-			 //On récupère le fichier json pour le parser
+			 //getting the json in order to parse it
 	         JSONObject jsonO = (JSONObject) jsonP.parse(new FileReader(jsonFile));
 	     
 	         JSONArray parametersList = (JSONArray) jsonO.get("parameters");
 	         
 	         Iterator<?> paramIter = parametersList.iterator();
 	         
-	         //On regarde tout les paramètres
+	         //scouting for parameters we know
 	         while (paramIter.hasNext()) {
 
 	        	 JSONObject our_measure = (JSONObject) paramIter.next();

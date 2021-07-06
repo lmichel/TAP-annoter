@@ -31,7 +31,7 @@ public class WalkerGetter {
 		try {
 			builder = factory.newDocumentBuilder();
 			ourDoc = builder.parse(fileToGet);
-			DocumentTraversal traversal = (DocumentTraversal) ourDoc;
+			DocumentTraversalForMover traversal = (DocumentTraversalForMover) ourDoc;
 		    TreeWalkerMover walker = (TreeWalkerMover) traversal.createTreeWalker(
 		            ourDoc.getDocumentElement(), NodeFilter.SHOW_ELEMENT, null, true);
 		    walker.getRoot();

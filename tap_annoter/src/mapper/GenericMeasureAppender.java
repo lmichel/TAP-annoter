@@ -1,26 +1,20 @@
 package mapper;
 
 import java.io.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 
 import org.json.simple.*;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-import org.w3c.dom.traversal.DocumentTraversal;
-import org.w3c.dom.traversal.NodeFilter;
-import org.w3c.dom.traversal.TreeWalker;
-import org.xml.sax.SAXException;
 
 import utils.TreeWalkerMover;
 import utils.WalkerGetter;
 
 
+/**
+ * @author joann
+ *
+ */
 public class GenericMeasureAppender {
 	
 	private JSONObject ourMeasure;
@@ -37,9 +31,9 @@ public class GenericMeasureAppender {
 	
 
 	/**
-	 * @param json
-	 * @param mango
-	 * @param walker
+	 * @param json config file
+	 * @param mangoComponentFile the mapping component.xml
+	 * @param walker the walker we have to fill
 	 */
 	public GenericMeasureAppender(JSONObject json, File mango, TreeWalkerMover walker) {
 		
@@ -48,26 +42,36 @@ public class GenericMeasureAppender {
 		this.walker = walker;
 	}
 
+	/**
+	 * @param templateDoc needed to merge
+	 * Class used to append a Generic Measure in the mapping
+	 */
 	public void AppendGenericMeasure(Document templateDoc) {
 		
-		this.getParameters();
+		this.getParameters(); //getting the parameters from the json file
 		
+		//walker for the mapping component
 		WalkerGetter getter = new WalkerGetter(mangoComponentFile);
 		TreeWalkerMover mangoWalker = getter.getWalker();
 		
+		//going to the place where the <TABLE_MAPPING> is
 		mangoWalker.goToTableMapping();
-			
+		
+		//setting the parameters
 		setParameters(mangoWalker);
-			
-		mangoWalker.goToTableMapping();		
 		
 		walker.goToRoot();
 			
+		//we are putting the walker in the place we want to fill our mapping component
 		walker.goToCollectionParameters();
-			
+		
+		//filling our walker with the mangoWalker mapping component
 		walker.appendConfig(mangoWalker,templateDoc);
 	}
 	
+	/**
+	 * This method is used to get all the parameters needed to replace @@@@@ in mapping components
+	 */
 	public void getParameters() {
 		
 		System.out.println("Getting parameters");
@@ -96,17 +100,24 @@ public class GenericMeasureAppender {
 		
 	}
 
-	public void setParameters(TreeWalker mangoComponentWalker) {
+	/**
+	 * @param mangoComponentWalker the walker of mango mapping component
+	 * This method is used to replace the values of the different parameters in the mapping component
+	 */
+	public void setParameters(TreeWalkerMover mangoComponentWalker) {
 		
 		boolean inError = false;
 		String currentdmrole = "notivoa";
+		
 		while (!(currentdmrole.equals("ivoa:Quantity.unit"))) {
-			//setting all parameters
+
 			Node currentNode = mangoComponentWalker.getCurrentNode();
-			
 			Element currentElement = (Element) currentNode;
+			
+			//to know in which instance we are
 			currentdmrole = currentElement.getAttribute("dmrole");
-				//to know in which instance we are
+
+			//updating values
 			switch(currentdmrole) {
 				case("meas:Measure.error"):
 					inError = true;
@@ -158,6 +169,8 @@ public class GenericMeasureAppender {
 				}
 			mangoComponentWalker.nextNode();
 			}
+		
+		mangoComponentWalker.goToTableMapping(); //going back to table mapping to have the whole encapsulation		
 		
 
 	}

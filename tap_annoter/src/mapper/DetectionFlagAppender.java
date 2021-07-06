@@ -2,23 +2,20 @@ package mapper;
 
 import java.io.*;
 import java.net.URISyntaxException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 
 import org.json.simple.*;
 import org.w3c.dom.*;
 import org.w3c.dom.traversal.*;
-import org.xml.sax.SAXException;
 
 import utils.FileGetter;
 import utils.TreeWalkerMover;
 import utils.WalkerGetter;
 
 
+/**
+ * @author joann
+ * Class used to append a Detection Flag in the mapping
+ */
 public class DetectionFlagAppender {
 
 	private JSONObject ourMeasure;
@@ -30,6 +27,11 @@ public class DetectionFlagAppender {
 	private String coordValue;
 	private TreeWalkerMover walker;
 	
+	/**
+	 * @param json, the json config file
+	 * @param mango, the mango mapping component
+	 * @param walker, the walker, which we have to fill
+	 */
 	public DetectionFlagAppender(JSONObject json, File mango,TreeWalkerMover walker) {
 		
 			this.ourMeasure = json;
@@ -37,32 +39,42 @@ public class DetectionFlagAppender {
 			this.walker = walker;
 	}
 	
+	/**
+	 * @param templateDoc, the document which we have to fill (needed to import node)
+	 * This is the core method of the class, it is used to append a measure of type
+	 * DetectionFlag in the xml document
+	 */
 	public void AppendDetectionFlag(Document templateDoc) {
 		
-		GetParameters();
+		//we have to get the parameters in the json first
+		this.getParameters();
 		
-		//checking globals and putting them if needed
-		if (!AreGlobalsSet()) {
+		//checking globals and setting them if needed
+		if (!areGlobalsSet()) {
 			setGlobal(templateDoc);
 		}
 		
+		//getting the walker of mapping component to fill it
 		WalkerGetter getter = new WalkerGetter(mangoFile);
 		TreeWalkerMover mangoWalker = getter.getWalker();
 		
 		mangoWalker.goToTableMapping(); //We go to table mapping
 		
-		setParameters(mangoWalker);
+		setParameters(mangoWalker); //filling the walker with parameters
 		
 		mangoWalker.goToTableMapping();//going back to table mapping to add the good node in global walker
 		
-		walker.goToCollectionParameters();
+		walker.goToCollectionParameters();//going to the right place in the walker we need to fill with mangoWalker
 		
-		walker.appendConfig(mangoWalker, templateDoc);
+		walker.appendConfig(mangoWalker, templateDoc);//merging mangoWalker in the walker we need to fill
 		
 		System.out.println("Detection flag added");
 	}
 
-	public void GetParameters() {
+	/**
+	 * Method used to get the several parameters that are in the json config file
+	 */
+	public void getParameters() {
 		
 		System.out.println("Getting parameters");
 		this.ucd = (String) ourMeasure.get("ucd");
@@ -84,7 +96,10 @@ public class DetectionFlagAppender {
 		
 	}
 	
-	public boolean AreGlobalsSet() {
+	/**
+	 * @return a boolean that represents if the globals are already set or not
+	 */
+	public boolean areGlobalsSet() {
 		
 		walker.goToRoot();
 		Node ourGlobals = walker.firstChild();
@@ -107,15 +122,19 @@ public class DetectionFlagAppender {
 		return false;
 	}
 	
+	/**
+	 * @param templateDoc the doc (needed for merging)
+	 * 
+	 * This method is setting globals in the walker we need to fill
+	 */
 	public void setGlobal(Document templateDoc) {
 		
-		FileGetter getter = new FileGetter("mango.frame."+frame+".xml");
+		FileGetter getter = new FileGetter("mango.frame."+frame+".xml"); //getting the frame file
 
 		try {
 			File frameFile = getter.GetFile();
 			WalkerGetter gettingWalker = new WalkerGetter(frameFile);
 			TreeWalker frameWalker = gettingWalker.getWalker();
-			System.out.println(((Element) frameWalker.getRoot()).getTagName());
 			walker.goToRoot();
 			Node globals = walker.firstChild();
 			Node importedNode = templateDoc.importNode(frameWalker.getRoot(), true);
@@ -125,20 +144,24 @@ public class DetectionFlagAppender {
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
 		}
-
-	    
 	}
 	
+	/**
+	 * @param mangoComponentWalker the walker used for the mapping component
+	 * This method is setting the parameters in the right attributes
+	 */
 	public void setParameters(TreeWalkerMover mangoComponentWalker) {
 
 		String currentdmrole = "notcoords";
+		
 		while (!(currentdmrole.equals("coords:Coordinate.coordSys"))) {
-			//setting all parameters
+			
 			Node currentNode = mangoComponentWalker.getCurrentNode();
 			
 			Element currentElement = (Element) currentNode;
+			//used to know in which instance we are
 			currentdmrole = currentElement.getAttribute("dmrole");
-				//to know in which instance we are
+				
 			switch(currentdmrole) {
 
 				//updating values
@@ -164,7 +187,7 @@ public class DetectionFlagAppender {
 				case("coords:Coordinate.coordSys"):
 					currentElement.setAttribute("dmref", "StatusFrame_"+frame);
 			}
-			mangoComponentWalker.nextNode();
+			mangoComponentWalker.nextNode();//going to the next node if not one of the parameters
 			
 		}
 		
