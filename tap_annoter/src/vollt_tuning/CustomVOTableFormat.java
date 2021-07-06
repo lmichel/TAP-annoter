@@ -9,6 +9,10 @@ import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.*;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 import adql.db.DBColumn;
 
@@ -23,6 +27,7 @@ import uk.ac.starlink.votable.DataFormat;
 import uk.ac.starlink.votable.VOSerializer;
 import uk.ac.starlink.votable.VOTableVersion;
 import utils.FileGetter;
+import utils.TreeWalkerMover;
 import utils.WalkerGetter;
 
 import org.json.simple.JSONObject;
@@ -30,6 +35,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.w3c.dom.*;
 import org.w3c.dom.traversal.*;
+import org.xml.sax.SAXException;
 
 public class CustomVOTableFormat extends VOTableFormat {
 
@@ -95,12 +101,21 @@ public class CustomVOTableFormat extends VOTableFormat {
 		      FileGetter templateGetter = new FileGetter("mango.mapping.xml");
 		      File mangoTemplate = templateGetter.GetFile();
 		      System.out.println("Template loaded correctly");
-		      WalkerGetter templateWalker = new WalkerGetter(mangoTemplate);
-		      TreeWalker walker = templateWalker.getWalker();
+		      Document templateDoc = null;
+			  DocumentBuilderFactory factory = null;
+			  factory = DocumentBuilderFactory.newInstance();
+			  DocumentBuilder builder;
+			  builder = factory.newDocumentBuilder();
+			  templateDoc = builder.parse(mangoTemplate);
+			  DocumentTraversal traversal = (DocumentTraversal) templateDoc;
+			  TreeWalkerMover walker = (TreeWalkerMover) traversal.createTreeWalker(
+					  templateDoc.getDocumentElement(), NodeFilter.SHOW_ELEMENT, null, true);
 			  File jsonFile = getter.GetFile();
 			  ProductMapper mapper = new ProductMapper(jsonFile);
 			  walker.getRoot();
-			  mapper.BuildAnnotations(out,walker);
+			  mapper.BuildAnnotations(out,walker,templateDoc);
+			  String finalString = xmlToString(templateDoc);
+			  out.write(finalString);
 
 		    } catch (Exception e) {
 		      e.printStackTrace();
@@ -176,6 +191,27 @@ public class CustomVOTableFormat extends VOTableFormat {
 		   ****************************************************************** */
 
 		out.flush();
+	}
+	
+	public static String xmlToString(Document doc) {
+	    String xmlString = null;
+	    try {
+	        Source source = new DOMSource(doc);
+	        StringWriter stringWriter = new StringWriter();
+	        Result result = new StreamResult(stringWriter);
+	        TransformerFactory factory = TransformerFactory.newInstance();
+	        Transformer transformer = factory.newTransformer();
+	        transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
+	        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
+	        transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "1");
+	        transformer.transform(source, result);
+	        xmlString = stringWriter.getBuffer().toString();
+	    } catch (TransformerConfigurationException e) {
+	        e.printStackTrace();
+	    } catch (TransformerException e) {
+	        e.printStackTrace();
+	    }
+	    return xmlString;
 	}
 }
 

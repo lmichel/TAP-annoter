@@ -15,6 +15,7 @@ import org.w3c.dom.traversal.*;
 import org.xml.sax.SAXException;
 
 import utils.FileGetter;
+import utils.TreeWalkerMover;
 import utils.WalkerGetter;
 
 
@@ -27,62 +28,38 @@ public class DetectionFlagAppender {
 	private String description;
 	private String frame;
 	private String coordValue;
+	private TreeWalkerMover walker;
 	
-	public DetectionFlagAppender(JSONObject json, File mango) {
+	public DetectionFlagAppender(JSONObject json, File mango,TreeWalkerMover walker) {
 		
 			this.ourMeasure = json;
 			this.mangoFile = mango;
+			this.walker = walker;
 	}
 	
-	public TreeWalker AppendDetectionFlag(BufferedWriter out, TreeWalker walker) {
+	public void AppendDetectionFlag(Document templateDoc) {
 		
 		GetParameters();
 		
 		//checking globals and putting them if needed
-		if (!AreGlobalsSet(walker)) {
-			walker = setGlobal(walker);
+		if (!AreGlobalsSet()) {
+			setGlobal(templateDoc);
 		}
 		
 		WalkerGetter getter = new WalkerGetter(mangoFile);
-		TreeWalker mangoWalker = getter.getWalker();
-		mangoWalker.getRoot();
+		TreeWalkerMover mangoWalker = getter.getWalker();
 		
-		while (!((((Element) mangoWalker.getCurrentNode()).getTagName()).equals("TABLE_MAPPING"))) {
-			mangoWalker.nextNode(); //putting mangoWalker to the right place
-		}
+		mangoWalker.goToTableMapping(); //We go to table mapping
 		
-		mangoWalker.firstChild(); //we are at <INSTANCE dmrole="root" dmtype="mango:stcextend.Flag">
+		setParameters(mangoWalker);
 		
-		while (mangoWalker.getCurrentNode()!=null) {
-			Node currentNode = mangoWalker.nextNode();
-			Element currentElement = (Element) currentNode;
-			String currentdmrole = currentElement.getAttribute("dmrole");
-			
-			//updating values
-			if (currentdmrole.equals("mango:Parameter.semantic")) currentElement.setAttribute("value", semantic);
-			else if (currentdmrole.equals("mango:Parameter.ucd")) currentElement.setAttribute("value", ucd);
-			else if (currentdmrole.equals("mango:Parameter.description")) currentElement.setAttribute("value", description);
-			else if (currentdmrole.equals("mango:stcextend.FlagCoord.coord")) currentElement.setAttribute("ref",coordValue);
-			else if (currentdmrole.equals("coords:Coordinate.coordSys")) currentElement.setAttribute("dmref","StatusFrame_"+frame);
-		}
+		mangoWalker.goToTableMapping();//going back to table mapping to add the good node in global walker
 		
-		mangoWalker.getRoot();
+		walker.goToCollectionParameters();
 		
-		while (!((((Element) mangoWalker.getCurrentNode()).getTagName()).equals("TABLE_MAPPING"))) {
-			mangoWalker.nextNode(); //putting mangoWalker to the right place again
-		}
+		walker.appendConfig(mangoWalker, templateDoc);
 		
-		mangoWalker.firstChild(); //we are at <INSTANCE dmrole="root" dmtype="mango:stcextend.Flag">
-		
-		while (!(((Element)(walker.getCurrentNode())).getAttribute("dmrole")).equals("mango:MangoObject.parameters")) {
-			walker.nextNode();
-		}
-		
-		Node newChild = mangoWalker.getCurrentNode();
-		Node nodeToModify = walker.getCurrentNode();
-		nodeToModify.appendChild(newChild);
-		walker.getRoot();
-		return(walker);
+		System.out.println("Detection flag added");
 	}
 
 	public void GetParameters() {
@@ -107,9 +84,9 @@ public class DetectionFlagAppender {
 		
 	}
 	
-	public boolean AreGlobalsSet(TreeWalker walker) {
+	public boolean AreGlobalsSet() {
 		
-		walker.getRoot();
+		walker.goToRoot();
 		Node ourGlobals = walker.firstChild();
 		NodeList nodeList = ourGlobals.getChildNodes();
 		int nodeNumber = nodeList.getLength();
@@ -126,11 +103,11 @@ public class DetectionFlagAppender {
 				if (ourFrame.equals("StatusFrame_"+frame)) return true;
 			}
 		}
-		
+		System.out.println("Globals are not set, we are setting them right now !");
 		return false;
 	}
 	
-	public TreeWalker setGlobal(TreeWalker walker) {
+	public void setGlobal(Document templateDoc) {
 		
 		FileGetter getter = new FileGetter("mango.frame."+frame+".xml");
 
@@ -138,15 +115,61 @@ public class DetectionFlagAppender {
 			File frameFile = getter.GetFile();
 			WalkerGetter gettingWalker = new WalkerGetter(frameFile);
 			TreeWalker frameWalker = gettingWalker.getWalker();
-		    walker.firstChild().appendChild(frameWalker.getRoot());
-		    return(walker);
+			System.out.println(((Element) frameWalker.getRoot()).getTagName());
+			walker.goToRoot();
+			Node globals = walker.firstChild();
+			Node importedNode = templateDoc.importNode(frameWalker.getRoot(), true);
+			globals.appendChild(importedNode);
+
 			
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
 		}
 
-		return null;
 	    
 	}
+	
+	public void setParameters(TreeWalkerMover mangoComponentWalker) {
+
+		String currentdmrole = "notcoords";
+		while (!(currentdmrole.equals("coords:Coordinate.coordSys"))) {
+			//setting all parameters
+			Node currentNode = mangoComponentWalker.getCurrentNode();
+			
+			Element currentElement = (Element) currentNode;
+			currentdmrole = currentElement.getAttribute("dmrole");
+				//to know in which instance we are
+			switch(currentdmrole) {
+
+				//updating values
+				case("mango:Parameter.semantic"):
+					currentElement.setAttribute("value", semantic);
+					System.out.println("Setting semantic");
+					break;
+					
+				case("mango:Parameter.ucd"):
+					currentElement.setAttribute("value", ucd);
+					System.out.println("Setting ucd");
+					break;
+		
+				case("mango:Parameter.description"): 
+					currentElement.setAttribute("value", description);
+					System.out.println("Setting description");
+					break;
+			
+				case("mango:stcextend.FlagCoord.coord"):
+					currentElement.setAttribute("ref", coordValue);
+					break;
+					
+				case("coords:Coordinate.coordSys"):
+					currentElement.setAttribute("dmref", "StatusFrame_"+frame);
+			}
+			mangoComponentWalker.nextNode();
+			
+		}
+		
+
+	}
+
 }
 

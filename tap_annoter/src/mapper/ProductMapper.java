@@ -17,6 +17,7 @@ import org.w3c.dom.traversal.*;
 import tap.TAPException;
 
 import utils.FileGetter;
+import utils.TreeWalkerMover;
 
 import org.apache.xerces.parsers.*;
 
@@ -37,7 +38,7 @@ public class ProductMapper {
 	 * @param out
 	 * @throws IOException
 	 */
-	public void BuildAnnotations(BufferedWriter out,TreeWalker walker) throws IOException {
+	public void BuildAnnotations(BufferedWriter out,TreeWalkerMover walker,Document templateDoc) throws IOException {
 		
 	    
 		JSONParser jsonP = new JSONParser();
@@ -133,8 +134,8 @@ public class ProductMapper {
 	        		 try {
 		     				File mangoFile = new FileGetter("mango.GenericMeasure.mapping.xml").GetFile();
 		     				System.out.println("file done");
-		     				GenericMeasureAppender appender = new GenericMeasureAppender(our_measure,mangoFile);
-		     				appender.AppendGenericMeasure(out,walker);
+		     				GenericMeasureAppender appender = new GenericMeasureAppender(our_measure,mangoFile, walker);
+		     				appender.AppendGenericMeasure(templateDoc);
 		     			} catch (URISyntaxException e1) {
 		     				System.out.println("File doesn't exist");
 		     				e1.printStackTrace();
@@ -158,15 +159,16 @@ public class ProductMapper {
 	        	 
 	        	 else if ((our_measure.get("measure").equals("DetectionFlag"))) {
 	        		 
+	        		 
 	        		 try {
 		     				File mangoFile = new FileGetter("mango.DetectionFlag.mapping.xml").GetFile();
-		     				DetectionFlagAppender appender = new DetectionFlagAppender(our_measure,mangoFile);
-		     				walker = appender.AppendDetectionFlag(out,walker);
+		     				DetectionFlagAppender appender = new DetectionFlagAppender(our_measure,mangoFile, walker);
+		     				appender.AppendDetectionFlag(templateDoc);
 		     			} catch (URISyntaxException e1) {
 		     				System.out.println("File doesn't exist");
 		     				e1.printStackTrace();
 		     			}
-
+	        		  
 	        	 }
 	        	 
 	        	 else if ((our_measure.get("measure").equals("MJD"))) {
