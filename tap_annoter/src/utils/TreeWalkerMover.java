@@ -1,21 +1,24 @@
 package utils;
 
+import org.apache.xerces.dom.TreeWalkerImpl;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+import org.w3c.dom.traversal.NodeFilter;
 import org.w3c.dom.traversal.TreeWalker;
+
 
 /**
  * @author joann
  * This class is an implementation of TreeWalker in order to add several methods
  * that are usefull in our appenders
  */
-public abstract class TreeWalkerMover implements TreeWalker {
+public  class TreeWalkerMover extends TreeWalkerImpl {
 	
-	public TreeWalkerMover() {
-		super();
+	public TreeWalkerMover(Node arg0, int arg1, NodeFilter arg2, boolean arg3) {
+		super(arg0, arg1, arg2, arg3);
 	}
-
+	
 	
 	/**
 	 * This method is used to set the cursor of our Tree on the Node Child of TableMapping
@@ -81,4 +84,5 @@ public abstract class TreeWalkerMover implements TreeWalker {
 			System.out.println("Going back to root in generic measure");
 		}
 	}
+
 }

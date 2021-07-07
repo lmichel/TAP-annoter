@@ -9,6 +9,7 @@ import org.json.simple.*;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.w3c.dom.*;
+import org.w3c.dom.traversal.TreeWalker;
 
 import utils.FileGetter;
 import utils.TreeWalkerMover;
@@ -33,7 +34,7 @@ public class ProductMapper {
 	 * @param out
 	 * @throws IOException
 	 */
-	public void BuildAnnotations(BufferedWriter out,TreeWalkerMover walker,Document templateDoc) throws IOException {
+	public void BuildAnnotations(BufferedWriter out,TreeWalker walker,Document templateDoc) throws IOException {
 		
 	    
 		JSONParser jsonP = new JSONParser();

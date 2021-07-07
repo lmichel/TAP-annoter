@@ -6,8 +6,9 @@ import org.json.simple.*;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
+import org.w3c.dom.traversal.TreeWalker;
 
-import utils.TreeWalkerMover;
+
 import utils.WalkerGetter;
 
 
@@ -27,7 +28,7 @@ public class GenericMeasureAppender {
 	private String coordUnit;
 	private String errorValue;
 	private String errorUnit;
-	private TreeWalkerMover walker;
+	private TreeWalker walker;
 	
 
 	/**
@@ -35,7 +36,7 @@ public class GenericMeasureAppender {
 	 * @param mangoComponentFile the mapping component.xml
 	 * @param walker the walker we have to fill
 	 */
-	public GenericMeasureAppender(JSONObject json, File mango, TreeWalkerMover walker) {
+	public GenericMeasureAppender(JSONObject json, File mango, TreeWalker walker) {
 		
 		this.ourMeasure = json;
 		this.mangoComponentFile = mango;
@@ -52,21 +53,21 @@ public class GenericMeasureAppender {
 		
 		//walker for the mapping component
 		WalkerGetter getter = new WalkerGetter(mangoComponentFile);
-		TreeWalkerMover mangoWalker = getter.getWalker();
+		TreeWalker mangoWalker = getter.getWalker();
 		
 		//going to the place where the <TABLE_MAPPING> is
-		mangoWalker.goToTableMapping();
+		goToTableMapping(mangoWalker);
 		
 		//setting the parameters
 		setParameters(mangoWalker);
 		
-		walker.goToRoot();
+		goToRoot(walker);
 			
 		//we are putting the walker in the place we want to fill our mapping component
-		walker.goToCollectionParameters();
+		goToCollectionParameters();
 		
 		//filling our walker with the mangoWalker mapping component
-		walker.appendConfig(mangoWalker,templateDoc);
+		appendConfig(mangoWalker,templateDoc);
 	}
 	
 	/**
@@ -97,6 +98,7 @@ public class GenericMeasureAppender {
 		this.errorValue = (String) random.get("value");
 		errorValue = errorValue.replace("@", "");
 		this.errorUnit = (String) random.get("unit");
+		System.out.println("we got parameters");
 		
 	}
 
@@ -104,7 +106,7 @@ public class GenericMeasureAppender {
 	 * @param mangoComponentWalker the walker of mango mapping component
 	 * This method is used to replace the values of the different parameters in the mapping component
 	 */
-	public void setParameters(TreeWalkerMover mangoComponentWalker) {
+	public void setParameters(TreeWalker mangoComponentWalker) {
 		
 		boolean inError = false;
 		String currentdmrole = "notivoa";
@@ -170,9 +172,58 @@ public class GenericMeasureAppender {
 			mangoComponentWalker.nextNode();
 			}
 		
-		mangoComponentWalker.goToTableMapping(); //going back to table mapping to have the whole encapsulation		
+		goToTableMapping(mangoComponentWalker); //going back to table mapping to have the whole encapsulation		
 		
 
 	}
 	
+	public void goToTableMapping(TreeWalker mangoWalker) {
+		
+		goToRoot(mangoWalker); //getting on root to parse the tree from the begginning
+		
+		//putting mangoWalker to the right place
+		while (((Element) (mangoWalker.getCurrentNode())).getTagName()!="TABLE_MAPPING") {
+			mangoWalker.nextNode();
+			System.out.println(((Element) (mangoWalker.getCurrentNode())).getTagName());
+		}
+		
+		mangoWalker.firstChild(); //we are at <INSTANCE dmrole="root"...>
+		
+	}
+	
+	public void goToCollectionParameters() {
+		
+		while (this.walker.getCurrentNode()!=null) {
+
+
+			String currentdmrole = ((Element)(this.walker.getCurrentNode())).getAttribute("dmrole");
+				
+			if (currentdmrole != null && currentdmrole.equals("mango:MangoObject.parameters")) {
+				break; //we are in the right place
+				}
+			
+			this.walker.nextNode();
+			
+			}
+		}
+	
+	public void appendConfig(TreeWalker mangoWalker,Document templateDoc) {
+		
+		Node newImportedChild = templateDoc.importNode(mangoWalker.getCurrentNode(),true); //necessary, otherwise java doesn't know which node to modify
+		Node nodeToModify = this.walker.getCurrentNode();
+		nodeToModify.appendChild(newImportedChild);
+		goToRoot(this.walker);
+
+	}
+	
+	public void goToRoot(TreeWalker currentWalker) {
+		
+		System.out.println("going to root !");
+		
+		while (currentWalker.getCurrentNode()!=currentWalker.getRoot()) {
+			currentWalker.parentNode();
+			System.out.println("Vroum");
+
+		}
+	}
 }

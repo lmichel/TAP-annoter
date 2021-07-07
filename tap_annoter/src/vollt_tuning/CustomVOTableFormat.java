@@ -25,6 +25,7 @@ import uk.ac.starlink.votable.VOTableVersion;
 import utils.FileGetter;
 import utils.TreeWalkerMover;
 
+import org.apache.xerces.dom.TreeWalkerImpl;
 import org.w3c.dom.*;
 import org.w3c.dom.traversal.*;
 
@@ -100,7 +101,7 @@ public class CustomVOTableFormat extends VOTableFormat {
 			  builder = factory.newDocumentBuilder();
 			  templateDoc = builder.parse(mangoTemplate);
 			  DocumentTraversal traversal = (DocumentTraversal) templateDoc;
-			  TreeWalkerMover walker = (TreeWalkerMover) traversal.createTreeWalker(
+			  TreeWalker walker = traversal.createTreeWalker(
 					  templateDoc.getDocumentElement(), NodeFilter.SHOW_ELEMENT, null, true);
 			  File jsonFile = getter.GetFile();
 			  ProductMapper mapper = new ProductMapper(jsonFile);

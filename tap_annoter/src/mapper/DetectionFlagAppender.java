@@ -8,7 +8,6 @@ import org.w3c.dom.*;
 import org.w3c.dom.traversal.*;
 
 import utils.FileGetter;
-import utils.TreeWalkerMover;
 import utils.WalkerGetter;
 
 
@@ -25,14 +24,14 @@ public class DetectionFlagAppender {
 	private String description;
 	private String frame;
 	private String coordValue;
-	private TreeWalkerMover walker;
+	private TreeWalker walker;
 	
 	/**
 	 * @param json, the json config file
 	 * @param mango, the mango mapping component
 	 * @param walker, the walker, which we have to fill
 	 */
-	public DetectionFlagAppender(JSONObject json, File mango,TreeWalkerMover walker) {
+	public DetectionFlagAppender(JSONObject json, File mango,TreeWalker walker) {
 		
 			this.ourMeasure = json;
 			this.mangoFile = mango;
@@ -56,17 +55,17 @@ public class DetectionFlagAppender {
 		
 		//getting the walker of mapping component to fill it
 		WalkerGetter getter = new WalkerGetter(mangoFile);
-		TreeWalkerMover mangoWalker = getter.getWalker();
+		TreeWalker mangoWalker = getter.getWalker();
 		
-		mangoWalker.goToTableMapping(); //We go to table mapping
+		goToTableMapping(mangoWalker); //We go to table mapping
 		
 		setParameters(mangoWalker); //filling the walker with parameters
 		
-		mangoWalker.goToTableMapping();//going back to table mapping to add the good node in global walker
+		goToTableMapping(mangoWalker);//going back to table mapping to add the good node in global walker
 		
-		walker.goToCollectionParameters();//going to the right place in the walker we need to fill with mangoWalker
+		goToCollectionParameters();//going to the right place in the walker we need to fill with mangoWalker
 		
-		walker.appendConfig(mangoWalker, templateDoc);//merging mangoWalker in the walker we need to fill
+		appendConfig(mangoWalker, templateDoc);//merging mangoWalker in the walker we need to fill
 		
 		System.out.println("Detection flag added");
 	}
@@ -101,7 +100,7 @@ public class DetectionFlagAppender {
 	 */
 	public boolean areGlobalsSet() {
 		
-		walker.goToRoot();
+		goToRoot(walker);
 		Node ourGlobals = walker.firstChild();
 		NodeList nodeList = ourGlobals.getChildNodes();
 		int nodeNumber = nodeList.getLength();
@@ -135,7 +134,7 @@ public class DetectionFlagAppender {
 			File frameFile = getter.GetFile();
 			WalkerGetter gettingWalker = new WalkerGetter(frameFile);
 			TreeWalker frameWalker = gettingWalker.getWalker();
-			walker.goToRoot();
+			goToRoot(walker);
 			Node globals = walker.firstChild();
 			Node importedNode = templateDoc.importNode(frameWalker.getRoot(), true);
 			globals.appendChild(importedNode);
@@ -150,7 +149,7 @@ public class DetectionFlagAppender {
 	 * @param mangoComponentWalker the walker used for the mapping component
 	 * This method is setting the parameters in the right attributes
 	 */
-	public void setParameters(TreeWalkerMover mangoComponentWalker) {
+	public void setParameters(TreeWalker mangoComponentWalker) {
 
 		String currentdmrole = "notcoords";
 		
@@ -192,6 +191,52 @@ public class DetectionFlagAppender {
 		}
 		
 
+	}
+	
+	public void goToTableMapping(TreeWalker mangoWalker) {
+		
+		goToRoot(mangoWalker); //getting on root to parse the tree from the begginning
+		
+		//putting mangoWalker to the right place
+		while (((Element) (mangoWalker.getCurrentNode())).getTagName()!="TABLE_MAPPING") {
+			mangoWalker.nextNode(); 
+		}
+		
+		mangoWalker.firstChild(); //we are at <INSTANCE dmrole="root"...>
+		
+	}
+	
+	public void goToCollectionParameters() {
+		
+		while (this.walker.getCurrentNode()!=null) {
+
+
+			String currentdmrole = ((Element)(this.walker.getCurrentNode())).getAttribute("dmrole");
+				
+			if (currentdmrole != null && currentdmrole.equals("mango:MangoObject.parameters")) {
+				break; //we are in the right place
+				}
+			
+			this.walker.nextNode();
+			
+			}
+		}
+	
+	public void appendConfig(TreeWalker mangoWalker,Document templateDoc) {
+		
+		Node newImportedChild = templateDoc.importNode(mangoWalker.getCurrentNode(),true); //necessary, otherwise java doesn't know which node to modify
+		Node nodeToModify = this.walker.getCurrentNode();
+		nodeToModify.appendChild(newImportedChild);
+		goToRoot(this.walker);
+
+	}
+	
+	public void goToRoot(TreeWalker currentWalker) {
+		
+		while (currentWalker.getCurrentNode()!=currentWalker.getRoot()) {
+			currentWalker.parentNode();
+
+		}
 	}
 
 }
