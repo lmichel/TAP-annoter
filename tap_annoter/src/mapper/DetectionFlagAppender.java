@@ -18,7 +18,7 @@ import utils.WalkerGetter;
 public class DetectionFlagAppender {
 
 	private JSONObject ourMeasure;
-	private File mangoFile;
+	private File mangoComponentFile;
 	private String ucd;
 	private String semantic;
 	private String description;
@@ -34,7 +34,7 @@ public class DetectionFlagAppender {
 	public DetectionFlagAppender(JSONObject json, File mango,TreeWalker walker) {
 		
 			this.ourMeasure = json;
-			this.mangoFile = mango;
+			this.mangoComponentFile = mango;
 			this.walker = walker;
 	}
 	
@@ -54,14 +54,12 @@ public class DetectionFlagAppender {
 		}
 		
 		//getting the walker of mapping component to fill it
-		WalkerGetter getter = new WalkerGetter(mangoFile);
+		WalkerGetter getter = new WalkerGetter(this.mangoComponentFile);
 		TreeWalker mangoWalker = getter.getWalker();
 		
 		goToTableMapping(mangoWalker); //We go to table mapping
 		
 		setParameters(mangoWalker); //filling the walker with parameters
-		
-		goToTableMapping(mangoWalker);//going back to table mapping to add the good node in global walker
 		
 		goToCollectionParameters();//going to the right place in the walker we need to fill with mangoWalker
 		
@@ -76,17 +74,17 @@ public class DetectionFlagAppender {
 	public void getParameters() {
 		
 		System.out.println("Getting parameters");
-		this.ucd = (String) ourMeasure.get("ucd");
+		this.ucd = (String) this.ourMeasure.get("ucd");
 		System.out.println("ucd : " + ucd);
-		this.semantic = (String) ourMeasure.get("semantic");
+		this.semantic = (String) this.ourMeasure.get("semantic");
 		System.out.println("semantic : " + semantic);
-		this.description = (String) ourMeasure.get("description");
+		this.description = (String) this.ourMeasure.get("description");
 		System.out.println("description : " + description);
-		JSONObject frames = (JSONObject) ourMeasure.get("frame");
+		JSONObject frames = (JSONObject) this.ourMeasure.get("frame");
 		System.out.println("Got frame");
 		this.frame = (String) frames.get("frame");
 		System.out.println("frame : " + frame);
-		JSONObject coordinate = (JSONObject) ourMeasure.get("coordinate");
+		JSONObject coordinate = (JSONObject) this.ourMeasure.get("coordinate");
 		System.out.println("Got coordinate");
 		this.coordValue = (String) coordinate.get("value");
 		coordValue = coordValue.replace("@", "");
@@ -189,6 +187,8 @@ public class DetectionFlagAppender {
 			mangoComponentWalker.nextNode();//going to the next node if not one of the parameters
 			
 		}
+		
+		goToTableMapping(mangoComponentWalker);//going back to table mapping to add the good node in global walker
 		
 
 	}

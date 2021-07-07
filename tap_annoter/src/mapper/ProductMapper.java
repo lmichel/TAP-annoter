@@ -71,8 +71,8 @@ public class ProductMapper {
 	        		 
 	        		 try {
 		     				File mangoFile = new FileGetter("mango.LonLatSkyPosition.mapping.xml").GetFile();
-		     				LonLatSkyPositionAppender appender = new LonLatSkyPositionAppender(our_measure,mangoFile);
-		     				appender.AppendLonLatSkyPosition(out,walker);
+		     				LonLatSkyPositionAppender appender = new LonLatSkyPositionAppender(our_measure,mangoFile, walker);
+		     				appender.AppendLonLatSkyPosition(templateDoc);
 		     			} catch (URISyntaxException e1) {
 		     				System.out.println("File doesn't exist");
 		     				e1.printStackTrace();
