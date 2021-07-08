@@ -201,7 +201,7 @@ public class CustomVOTableFormat extends VOTableFormat {
 	        Transformer transformer = factory.newTransformer();
 	        transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION, "yes");
 	        transformer.setOutputProperty(OutputKeys.INDENT, "yes");
-	        transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "1");
+	        transformer.setOutputProperty("{http://xml.apache.org/xslt}indent-amount", "2");
 	        transformer.transform(source, result);
 	        xmlString = stringWriter.getBuffer().toString();
 	    } catch (TransformerConfigurationException e) {
