@@ -1,0 +1,16 @@
+Comment finir le stage? 
+
+- rajouter la nouvelle table Chandra de /test ds la base 
+- lancer treewalker via Vollt 
+- controler le fichier votable annoté 
+
+RQ Mireille 1: pour pouvoir tester les autres annotations après la fin du stage , 
+je voudrais disposer d'un lancement du parser treewalker en java 
+appelable directement en mode commande. 
+ainsi je pourrais tester tous les arrangements de xxx.mango.config.json avec de nombreuses VOTables 
+
+RQ Mireille 2: 
+il reste des imprecisiions à lever dans MangoDM sur : 
+epoch : ds mesure et pas dans le Coordinate frame 
+hardness ratio: definition de la classe 
+Photometry : luminosity ? et lien avec la calibration PhotCal
