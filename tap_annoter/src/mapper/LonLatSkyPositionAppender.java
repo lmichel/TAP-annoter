@@ -1,6 +1,5 @@
 package mapper;
 
-import java.io.BufferedWriter;
 import java.io.File;
 import java.net.URISyntaxException;
 
@@ -14,6 +13,14 @@ import org.w3c.dom.traversal.TreeWalker;
 import utils.FileGetter;
 import utils.WalkerGetter;
 
+/**
+ * @author joann
+ *
+ */
+/**
+ * @author joann
+ *
+ */
 public class LonLatSkyPositionAppender {
 	
 	private JSONObject ourMeasure;
@@ -24,23 +31,32 @@ public class LonLatSkyPositionAppender {
 	private String description;
 	private String reductionStatus;
 	private String frameName;
-	private String frameEquinox;
+	//private String frameEquinox;
 	private String frameEpoch;
 	private String longitude;
 	private String latitude;
-	private String longLatUnit;
 	private String systematicErrorValue;
 	private String systematicErrorUnit;
 	private String randomErrorValue;
 	private String randomErrorUnit;
 	
+	/**
+	 * @param json the json object representing our measure (with all fields)
+	 * @param mango the mango xml component file
+	 * @param walker the walker we need to fill
+	 */
 	public LonLatSkyPositionAppender(JSONObject json,File mango,TreeWalker walker) {
-		this.ourMeasure = json;
-		this.mangoComponentFile = mango;
+		
+		this.ourMeasure = json; 
+		this.mangoComponentFile = mango; 
 		this.walker = walker;
 		
 	}
 	
+	/**
+	 * @param templateDoc the document we are filling (necessary for merging)
+	 * This method is used to append append a LongLatSkyPosition in the mapping
+	 */
 	public void AppendLonLatSkyPosition(Document templateDoc) {
 		
 		//we have to get the parameters in the json first
@@ -68,16 +84,20 @@ public class LonLatSkyPositionAppender {
 				System.out.println("LonLatSkyPosition added");
 	}
 
+	/**
+	 * @return true if the global is already set, false otherwise
+	 */
 	private boolean areGlobalsSet() {
 
-		goToRoot(walker);
+		goToRoot(walker);//going to root to know where we are
 		Node ourGlobals = walker.firstChild();
-		NodeList nodeList = ourGlobals.getChildNodes();
+		NodeList nodeList = ourGlobals.getChildNodes(); //this is the content of globals
 		int nodeNumber = nodeList.getLength();
 		
-		if (nodeNumber==0) return false;
+		if (nodeNumber==0) return false; //there are no globals
 		
 		else {
+			//parsing the list to check if the global we want to add is already there or no
 			for (int i=0;i<nodeNumber;i++) {
 				
 				Node currentNode = nodeList.item(i);
@@ -91,6 +111,9 @@ public class LonLatSkyPositionAppender {
 		return false;
 	}
 
+	/**
+	 * @param templateDoc the document we want to fill (necessary for merging)
+	 */
 	public void setGlobal(Document templateDoc) {
 		
 		FileGetter getter = new FileGetter("mango.frame."+frameName+".xml"); //getting the frame file
@@ -99,17 +122,50 @@ public class LonLatSkyPositionAppender {
 			File frameFile = getter.GetFile();
 			WalkerGetter gettingWalker = new WalkerGetter(frameFile);
 			TreeWalker frameWalker = gettingWalker.getWalker();
-			goToRoot(walker);
-			Node globals = walker.firstChild();
-			Node importedNode = templateDoc.importNode(frameWalker.getRoot(), true);
-			globals.appendChild(importedNode);
-
+			
+			//we want to check if the frame file has to be modified or not
+			if (this.frameEpoch==null) {
+				//if not, we just add it into globals
+				goToRoot(walker);
+				Node globals = walker.firstChild();
+				Node importedNode = templateDoc.importNode(frameWalker.getRoot(), true);
+				globals.appendChild(importedNode);
+			}
+			
+			else {
+				//modifying and then adding the frame into globals
+				Element currentElement = (Element) frameWalker.getCurrentNode();
+				String currentdmrole = currentElement.getAttribute("dmrole");
+				
+				while (!(currentdmrole.equals("coords:SpaceFrame.equinox"))&&currentElement!=null) {
+					
+					currentElement = (Element) frameWalker.getCurrentNode();
+					currentdmrole = currentElement.getAttribute("dmrole");
+					frameWalker.nextNode();
+					
+					}
+				
+				if (currentdmrole.equals("coords;SpaceFrame.equinox")) {
+					
+					currentElement.setAttribute("value", this.frameEpoch);
+					
+				}
+				
+				goToRoot(frameWalker);
+				goToRoot(walker);
+				Node globals = walker.firstChild();
+				Node importedNode = templateDoc.importNode(frameWalker.getRoot(), true);
+				globals.appendChild(importedNode);
+			}
 			
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
 		}
 	}
 	
+	/**
+	 * @param mangoComponentWalker the walker related to the mangoComponent file, that we need to fill
+	 */
 	public void setParameters(TreeWalker mangoComponentWalker) {
 		
 		boolean inRandomError = false;
@@ -124,7 +180,7 @@ public class LonLatSkyPositionAppender {
 			//to know in which instance we are
 			currentdmrole = currentElement.getAttribute("dmrole");
 
-			//updating values
+			//we want to know where we are because systematic and random unit/values have same dmrole
 			switch(currentdmrole) {
 				case("meas:Error.sysError"):
 					inSystematicError = true;
@@ -174,7 +230,7 @@ public class LonLatSkyPositionAppender {
 					break;
 					
 			}
-			
+			//updating for errors can't be in the switch
 			if (currentdmrole.equals("ivoa:RealQuantity.value") && inRandomError) {
 				currentElement.setAttribute("ref",this.randomErrorValue);
 				System.out.println("Setting randomErrorValue");
@@ -200,6 +256,9 @@ public class LonLatSkyPositionAppender {
 
 	}
 	
+	/**
+	 * This method is getting parameters from the json file
+	 */
 	public void getParameters() {
 		
 		System.out.println("Getting parameters");
@@ -213,15 +272,17 @@ public class LonLatSkyPositionAppender {
 		System.out.println("reductionStatus : " + reductionStatus);
 		JSONObject frame = (JSONObject) this.ourMeasure.get("frame");
 		this.frameName = (String) frame.get("frame");
-		this.frameEquinox = (String) frame.get("equinox");
+		//this.frameEquinox = (String) frame.get("equinox");
 		this.frameEpoch = (String) frame.get("epoch");
 		System.out.println("Got the details of the frame : "+frameName);
 		JSONObject position = (JSONObject) this.ourMeasure.get("position");
 		this.longitude = (String) position.get("longitude");
 		this.latitude = (String) position.get("latitude");
-		this.longLatUnit = (String) position.get("unit");
+		longitude = longitude.replace("@","");
+		latitude = latitude.replace("@","");
 		JSONObject errors = (JSONObject) this.ourMeasure.get("errors");
 		
+		//in order to avoid null pointer exception we check few things
 		if (errors.get("random")==null&&errors.get("systematic")==null) {
 			this.systematicErrorValue="NotSet";
 			this.systematicErrorUnit="NotSet";
@@ -235,6 +296,7 @@ public class LonLatSkyPositionAppender {
 			JSONObject systematicError = (JSONObject) errors.get("systematic");
 			this.systematicErrorUnit = (String) systematicError.get("unit");
 			this.systematicErrorValue = (String) systematicError.get("value");
+			systematicErrorValue = systematicErrorValue.replace("@","");
 			
 		}
 		
@@ -244,6 +306,7 @@ public class LonLatSkyPositionAppender {
 			JSONObject randomError = (JSONObject) errors.get("random");
 			this.randomErrorUnit = (String) randomError.get("unit");
 			this.randomErrorValue = (String) randomError.get("value");
+			randomErrorValue = randomErrorValue.replace("@","");
 		}
 		
 		else {
@@ -253,8 +316,18 @@ public class LonLatSkyPositionAppender {
 			this.systematicErrorValue = (String) systematicError.get("value");
 			this.randomErrorUnit = (String) randomError.get("unit");
 			this.randomErrorValue = (String) randomError.get("value");
+			systematicErrorValue = systematicErrorValue.replace("@","");
+			randomErrorValue = randomErrorValue.replace("@","");
 		}
 	}
+	
+	/*
+	 * ----------------------------------------------------------------------------------------------
+	 * These are generic methods that are to be put in a specific class later
+	 * We tried this by extending TreeWalker but the method used to do this is a DocumentTraversal
+	 * method, hence TreeWalker doesn't have a constructor that we can inherit and it causes troubles
+	 * ----------------------------------------------------------------------------------------------
+	 * */
 	
 	public void goToTableMapping(TreeWalker mangoWalker) {
 		

@@ -27,7 +27,7 @@ public class DetectionFlagAppender {
 	private TreeWalker walker;
 	
 	/**
-	 * @param json, the json config file
+	 * @param json, the json object representing our measure (with all fields)
 	 * @param mango, the mango mapping component
 	 * @param walker, the walker, which we have to fill
 	 */
@@ -192,7 +192,15 @@ public class DetectionFlagAppender {
 		
 
 	}
+
 	
+	/* ----------------------------------------------------------------------------------------------
+	 * These are generic methods that are to be put in a specific class later
+	 * We tried this by extending TreeWalker but the method used to do this is a DocumentTraversal
+	 * method, hence TreeWalker doesn't have a constructor that we can inherit and it causes troubles
+	 * ----------------------------------------------------------------------------------------------
+	 * */
+
 	public void goToTableMapping(TreeWalker mangoWalker) {
 		
 		goToRoot(mangoWalker); //getting on root to parse the tree from the begginning
@@ -233,11 +241,10 @@ public class DetectionFlagAppender {
 	
 	public void goToRoot(TreeWalker currentWalker) {
 		
-		while (currentWalker.getCurrentNode()!=currentWalker.getRoot()) {
-			currentWalker.parentNode();
+		currentWalker.setCurrentNode(currentWalker.getRoot());
 
 		}
-	}
-
 }
+
+
 

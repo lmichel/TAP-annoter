@@ -12,7 +12,7 @@ import org.w3c.dom.*;
 import org.w3c.dom.traversal.TreeWalker;
 
 import utils.FileGetter;
-import utils.TreeWalkerMover;
+
 
 /**
  * @author joann
@@ -42,7 +42,10 @@ public class ProductMapper {
 		try {
 			 //getting the json in order to parse it
 	         JSONObject jsonO = (JSONObject) jsonP.parse(new FileReader(jsonFile));
-	     
+	         
+	         String identifier = (String) jsonO.get("identifier");
+	         IdentifierAppender idAppend = new IdentifierAppender(identifier,walker);
+	         idAppend.appendIdentifier();
 	         JSONArray parametersList = (JSONArray) jsonO.get("parameters");
 	         
 	         Iterator<?> paramIter = parametersList.iterator();
@@ -56,8 +59,8 @@ public class ProductMapper {
 	        		 
 	        		 try {
 	     				File mangoFile = new FileGetter("mango.LonLatSkyPosition_ellerr.mapping.xml").GetFile();
-	     				LonLatSkyPositionEllErrAppender appender = new LonLatSkyPositionEllErrAppender(our_measure,mangoFile);
-	     				appender.AppendLonLatSkyPositionEllErr(out,walker);
+	     				LonLatSkyPositionEllErrAppender appender = new LonLatSkyPositionEllErrAppender(our_measure,mangoFile, walker);
+	     				appender.AppendLonLatSkyPositionEllErr(templateDoc);
 	     			} catch (URISyntaxException e1) {
 	     				System.out.println("File doesn't exist");
 	     				e1.printStackTrace();

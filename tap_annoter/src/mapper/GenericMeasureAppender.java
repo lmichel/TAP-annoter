@@ -32,7 +32,7 @@ public class GenericMeasureAppender {
 	
 
 	/**
-	 * @param json config file
+	 * @param json the json object representing our measure (with all fields)
 	 * @param mangoComponentFile the mapping component.xml
 	 * @param walker the walker we have to fill
 	 */
@@ -60,8 +60,6 @@ public class GenericMeasureAppender {
 		
 		//setting the parameters
 		setParameters(mangoWalker);
-		
-		goToRoot(walker);
 			
 		//we are putting the walker in the place we want to fill our mapping component
 		goToCollectionParameters();
@@ -177,6 +175,14 @@ public class GenericMeasureAppender {
 
 	}
 	
+	/*
+	 * ----------------------------------------------------------------------------------------------
+	 * These are generic methods that are to be put in a specific class later
+	 * We tried this by extending TreeWalker but the method used to do this is a DocumentTraversal
+	 * method, hence TreeWalker doesn't have a constructor that we can inherit and it causes troubles
+	 * ----------------------------------------------------------------------------------------------
+	 * */
+	
 	public void goToTableMapping(TreeWalker mangoWalker) {
 		
 		goToRoot(mangoWalker); //getting on root to parse the tree from the begginning
@@ -192,6 +198,8 @@ public class GenericMeasureAppender {
 	}
 	
 	public void goToCollectionParameters() {
+		
+		goToRoot(walker);
 		
 		while (this.walker.getCurrentNode()!=null) {
 
@@ -218,12 +226,6 @@ public class GenericMeasureAppender {
 	
 	public void goToRoot(TreeWalker currentWalker) {
 		
-		System.out.println("going to root !");
-		
-		while (currentWalker.getCurrentNode()!=currentWalker.getRoot()) {
-			currentWalker.parentNode();
-			System.out.println("Vroum");
-
-		}
+		currentWalker.setCurrentNode(currentWalker.getRoot());
 	}
 }

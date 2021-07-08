@@ -23,9 +23,7 @@ import uk.ac.starlink.votable.DataFormat;
 import uk.ac.starlink.votable.VOSerializer;
 import uk.ac.starlink.votable.VOTableVersion;
 import utils.FileGetter;
-import utils.TreeWalkerMover;
 
-import org.apache.xerces.dom.TreeWalkerImpl;
 import org.w3c.dom.*;
 import org.w3c.dom.traversal.*;
 
