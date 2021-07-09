@@ -192,7 +192,9 @@ public class CustomVOTableFormat extends VOTableFormat {
 	 * This method is used to convert an xml Document to a String
 	 */
 	public static String xmlToString(Document doc) {
+		
 	    String xmlString = null;
+	    
 	    try {
 	        Source source = new DOMSource(doc);
 	        StringWriter stringWriter = new StringWriter();

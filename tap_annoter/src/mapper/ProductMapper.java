@@ -100,8 +100,8 @@ public class ProductMapper {
 	        		 
 	        		 try {
 		     				File mangoFile = new FileGetter("mango.ProperMotion.mapping.xml").GetFile();
-		     				ProperMotionAppender appender = new ProperMotionAppender(our_measure,mangoFile);
-		     				appender.AppendProperMotion(out,walker);
+		     				ProperMotionAppender appender = new ProperMotionAppender(our_measure,mangoFile,walker);
+		     				appender.AppendProperMotion(templateDoc);
 		     			} catch (URISyntaxException e1) {
 		     				System.out.println("File doesn't exist");
 		     				e1.printStackTrace();
@@ -119,8 +119,8 @@ public class ProductMapper {
 	        		 
 	        		 try {
 		     				File mangoFile = new FileGetter("mango.Photometry.mapping.xml").GetFile();
-		     				PhotometryAppender appender = new PhotometryAppender(our_measure,mangoFile);
-		     				appender.AppendPhotometry(out,walker);
+		     				PhotometryAppender appender = new PhotometryAppender(our_measure,mangoFile,walker);
+		     				appender.AppendPhotometry(templateDoc);
 		     			} catch (URISyntaxException e1) {
 		     				System.out.println("File doesn't exist");
 		     				e1.printStackTrace();
@@ -146,8 +146,8 @@ public class ProductMapper {
 	        		 
 	        		 try {
 		     				File mangoFile = new FileGetter("mango.HardnessRatio.mapping.xml").GetFile();
-		     				HardnessRatioAppender appender = new HardnessRatioAppender(our_measure,mangoFile);
-		     				appender.AppendHardnessRatio(out,walker);
+		     				HardnessRatioAppender appender = new HardnessRatioAppender(our_measure,mangoFile, walker);
+		     				appender.AppendHardnessRatio(templateDoc);
 		     				
 		     			} catch (URISyntaxException e1) {
 		     				System.out.println("File doesn't exist");

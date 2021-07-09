@@ -66,31 +66,39 @@ public class LonLatSkyPositionEllErrAppender {
 		
 		this.appendConfig(mangoWalker, templateDoc);//merging mangoWalker in the walker we need to fill
 		
-		System.out.println("LonLatSkyPosition added");
+		System.out.println("LonLatSkyPositionEllErr added");
 		
 	}
 
 	public void getParameters() {
 		
 		System.out.println("Getting parameters");
+		
 		this.ucd = (String) ourMeasure.get("ucd");
 		System.out.println("ucd : " + ucd);
+		
 		this.semantic = (String) ourMeasure.get("semantic");
 		System.out.println("semantic : " + semantic);
+		
 		this.description = (String) ourMeasure.get("description");
 		System.out.println("description : " + description);
+		
 		this.reductionStatus = (String) ourMeasure.get("reductionStatus");
 		System.out.println("reductionStatus : " + reductionStatus);
+		
 		JSONObject frame = (JSONObject) this.ourMeasure.get("frame");
 		this.frameName = (String) frame.get("frame");
 		//this.frameEquinox = (String) frame.get("equinox");
 		this.frameEpoch = (String) frame.get("epoch");
 		System.out.println("Got the details of the frame : "+frameName);
+		
 		JSONObject position = (JSONObject) this.ourMeasure.get("position");
 		this.longitude = (String) position.get("longitude");
 		this.latitude = (String) position.get("latitude");
 		longitude = longitude.replace("@","");
 		latitude = latitude.replace("@","");
+		System.out.println("Got position details");
+		
 		JSONObject errors = (JSONObject) this.ourMeasure.get("errors");
 		JSONObject randomError = (JSONObject) errors.get("random");
 		JSONArray semiAxis = (JSONArray) randomError.get("semiAxis");
@@ -290,7 +298,8 @@ public class LonLatSkyPositionEllErrAppender {
 		
 		//putting mangoWalker to the right place
 		while (((Element) (mangoWalker.getCurrentNode())).getTagName()!="TABLE_MAPPING") {
-			mangoWalker.nextNode(); 
+			mangoWalker.nextNode();
+			System.out.println(((Element) (mangoWalker.getCurrentNode())).getTagName());
 		}
 		
 		mangoWalker.firstChild(); //we are at <INSTANCE dmrole="root"...>
@@ -298,6 +307,8 @@ public class LonLatSkyPositionEllErrAppender {
 	}
 	
 	public void goToCollectionParameters() {
+		
+		goToRoot(walker);
 		
 		while (this.walker.getCurrentNode()!=null) {
 
@@ -324,9 +335,6 @@ public class LonLatSkyPositionEllErrAppender {
 	
 	public void goToRoot(TreeWalker currentWalker) {
 		
-		while (currentWalker.getCurrentNode()!=currentWalker.getRoot()) {
-			currentWalker.parentNode();
-
-		}
+		currentWalker.setCurrentNode(currentWalker.getRoot());
 	}
 }

@@ -74,14 +74,19 @@ public class GenericMeasureAppender {
 	public void getParameters() {
 		
 		System.out.println("Getting parameters");
+		
 		this.ucd = (String) ourMeasure.get("ucd");
 		System.out.println("ucd : " + ucd);
+		
 		this.semantic = (String) ourMeasure.get("semantic");
 		System.out.println("semantic : " + semantic);
+		
 		this.description = (String) ourMeasure.get("description");
 		System.out.println("description : " + description);
+		
 		this.reductionStatus = (String) ourMeasure.get("reductionStatus");
 		System.out.println("reductionStatus : " + reductionStatus);
+		
 		JSONObject coordinate = (JSONObject) ourMeasure.get("coordinate");
 		System.out.println("Got coordinates");
 		this.coordValue = (String) coordinate.get("value");
@@ -89,6 +94,7 @@ public class GenericMeasureAppender {
 		System.out.println("value : " + coordValue);
 		this.coordUnit = (String) coordinate.get("unit");
 		System.out.println("unit : " + coordUnit);
+		
 		JSONObject error = (JSONObject) ourMeasure.get("errors");
 		System.out.println("Got errors");
 		JSONObject random = (JSONObject) error.get("random");
@@ -96,6 +102,7 @@ public class GenericMeasureAppender {
 		this.errorValue = (String) random.get("value");
 		errorValue = errorValue.replace("@", "");
 		this.errorUnit = (String) random.get("unit");
+		
 		System.out.println("we got parameters");
 		
 	}
@@ -155,15 +162,31 @@ public class GenericMeasureAppender {
 				System.out.println("Setting coordValue");
 			}
 			else if (currentdmrole.equals("ivoa:RealQuantity.unit")&& !(inError)) {
-				currentElement.setAttribute("ref",coordUnit);
+				currentElement.removeAttribute("ref");
+				currentElement.setAttribute("value",coordUnit);
 				System.out.println("Setting coordUnit");
 			}
 			else if (currentdmrole.equals("ivoa:RealQuantity.value") && inError) {
-				currentElement.setAttribute("ref",errorValue);
+				
+				if (errorValue.equals("")) {
+					currentElement.removeAttribute("ref");
+					currentElement.setAttribute("value","NotSet");
+				}
+				
+				else {
+					currentElement.setAttribute("ref",errorValue);
+				}
+
 				System.out.println("Setting errorValue");
 			}
 			else if (currentdmrole.equals("ivoa:Quantity.unit")&& inError) {
-					currentElement.setAttribute("ref",errorUnit);
+					currentElement.removeAttribute("ref");
+					
+					if (errorUnit.equals("")) {
+						errorUnit="NotSet";
+					}
+					
+					currentElement.setAttribute("value",errorUnit);
 					System.out.println("Setting errorUnit");
 
 				}

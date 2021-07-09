@@ -75,8 +75,6 @@ public class LonLatSkyPositionAppender {
 				
 				setParameters(mangoWalker); //filling the walker with parameters
 				
-				goToTableMapping(mangoWalker);//going back to table mapping to add the good node in global walker
-				
 				goToCollectionParameters();//going to the right place in the walker we need to fill with mangoWalker
 				
 				appendConfig(mangoWalker, templateDoc);//merging mangoWalker in the walker we need to fill
@@ -123,8 +121,18 @@ public class LonLatSkyPositionAppender {
 			WalkerGetter gettingWalker = new WalkerGetter(frameFile);
 			TreeWalker frameWalker = gettingWalker.getWalker();
 			
+			goToRoot(walker);
+			Node globals = walker.firstChild();
+			Node importedNode = templateDoc.importNode(frameWalker.getRoot(), true);
+			globals.appendChild(importedNode);
+			
+			/*******************************************
+			 * Just in case we need to fill the globals
+			 * *****************************************/
+			
 			//we want to check if the frame file has to be modified or not
-			if (this.frameEpoch==null) {
+			
+			/*if (this.frameEpoch==null) {
 				//if not, we just add it into globals
 				goToRoot(walker);
 				Node globals = walker.firstChild();
@@ -156,7 +164,7 @@ public class LonLatSkyPositionAppender {
 				Node globals = walker.firstChild();
 				Node importedNode = templateDoc.importNode(frameWalker.getRoot(), true);
 				globals.appendChild(importedNode);
-			}
+			}*/
 			
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
@@ -262,35 +270,42 @@ public class LonLatSkyPositionAppender {
 	public void getParameters() {
 		
 		System.out.println("Getting parameters");
+		
 		this.ucd = (String) ourMeasure.get("ucd");
 		System.out.println("ucd : " + ucd);
+		
 		this.semantic = (String) ourMeasure.get("semantic");
 		System.out.println("semantic : " + semantic);
+		
 		this.description = (String) ourMeasure.get("description");
 		System.out.println("description : " + description);
+		
 		this.reductionStatus = (String) ourMeasure.get("reductionStatus");
 		System.out.println("reductionStatus : " + reductionStatus);
+		
 		JSONObject frame = (JSONObject) this.ourMeasure.get("frame");
 		this.frameName = (String) frame.get("frame");
 		//this.frameEquinox = (String) frame.get("equinox");
 		this.frameEpoch = (String) frame.get("epoch");
+		
 		System.out.println("Got the details of the frame : "+frameName);
 		JSONObject position = (JSONObject) this.ourMeasure.get("position");
 		this.longitude = (String) position.get("longitude");
 		this.latitude = (String) position.get("latitude");
 		longitude = longitude.replace("@","");
 		latitude = latitude.replace("@","");
+		
 		JSONObject errors = (JSONObject) this.ourMeasure.get("errors");
 		
 		//in order to avoid null pointer exception we check few things
-		if (errors.get("random")==null&&errors.get("systematic")==null) {
+		if (errors.get("random")==null && errors.get("systematic")==null) {
 			this.systematicErrorValue="NotSet";
 			this.systematicErrorUnit="NotSet";
 			this.randomErrorUnit="NotSet";
 			this.randomErrorValue="NotSet";
 		}
 		
-		else if (errors.get("random")==null&&errors.get("systematic")!=null) {
+		else if (errors.get("random")==null && errors.get("systematic")!=null) {
 			this.randomErrorValue="NotSet";
 			this.randomErrorUnit="NotSet";
 			JSONObject systematicError = (JSONObject) errors.get("systematic");
@@ -335,7 +350,8 @@ public class LonLatSkyPositionAppender {
 		
 		//putting mangoWalker to the right place
 		while (((Element) (mangoWalker.getCurrentNode())).getTagName()!="TABLE_MAPPING") {
-			mangoWalker.nextNode(); 
+			mangoWalker.nextNode();
+			System.out.println(((Element) (mangoWalker.getCurrentNode())).getTagName());
 		}
 		
 		mangoWalker.firstChild(); //we are at <INSTANCE dmrole="root"...>
@@ -343,6 +359,8 @@ public class LonLatSkyPositionAppender {
 	}
 	
 	public void goToCollectionParameters() {
+		
+		goToRoot(walker);
 		
 		while (this.walker.getCurrentNode()!=null) {
 
@@ -369,9 +387,6 @@ public class LonLatSkyPositionAppender {
 	
 	public void goToRoot(TreeWalker currentWalker) {
 		
-		while (currentWalker.getCurrentNode()!=currentWalker.getRoot()) {
-			currentWalker.parentNode();
-
-		}
+		currentWalker.setCurrentNode(currentWalker.getRoot());
 	}
 }
