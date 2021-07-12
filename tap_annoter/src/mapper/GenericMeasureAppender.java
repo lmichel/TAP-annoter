@@ -97,11 +97,32 @@ public class GenericMeasureAppender {
 		
 		JSONObject error = (JSONObject) ourMeasure.get("errors");
 		System.out.println("Got errors");
+		
+		if (error!=null) {
+			
 		JSONObject random = (JSONObject) error.get("random");
 		System.out.println("Got random");
-		this.errorValue = (String) random.get("value");
-		errorValue = errorValue.replace("@", "");
-		this.errorUnit = (String) random.get("unit");
+		
+		if (random!=null) {
+			
+			this.errorValue = (String) random.get("value");
+			errorValue = errorValue.replace("@", "");
+			this.errorUnit = (String) random.get("unit");
+			
+		}
+		
+			else {
+				errorValue = "NotSet";
+				errorUnit = "NotSet";
+			}
+		}
+		
+		else {
+			
+			errorValue = "NotSet";
+			errorUnit = "NotSet";
+			
+		}
 		
 		System.out.println("we got parameters");
 		

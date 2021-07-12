@@ -167,13 +167,19 @@ public class PhotometryAppender {
 		JSONObject error = (JSONObject) this.ourMeasure.get("error");
 		System.out.println("Got error");
 		
-		JSONObject randomError = (JSONObject) error.get("random");
+		if (error!=null) {
+			JSONObject randomError = (JSONObject) error.get("random");
+			
+			this.errorRef = (String) randomError.get("value");
+			errorRef = errorRef.replace("@","");
+			this.errorUnit = (String) randomError.get("unit");
+			System.out.println("Got random error details");
+		}
 		
-		this.errorRef = (String) randomError.get("value");
-		errorRef = errorRef.replace("@","");
-		this.errorUnit = (String) randomError.get("unit");
-		System.out.println("Got random error details");
-		
+		else {
+			errorRef = "NotSet";
+			errorUnit = "NotSet";
+		}
 	}
 	
 	public boolean areGlobalsSet() {

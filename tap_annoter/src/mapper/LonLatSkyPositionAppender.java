@@ -114,6 +114,7 @@ public class LonLatSkyPositionAppender {
 	 */
 	public void setGlobal(Document templateDoc) {
 		
+		System.out.println(frameName);
 		FileGetter getter = new FileGetter("mango.frame."+frameName+".xml"); //getting the frame file
 
 		try {

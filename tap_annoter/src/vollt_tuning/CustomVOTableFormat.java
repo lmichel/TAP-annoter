@@ -119,6 +119,45 @@ public class CustomVOTableFormat extends VOTableFormat {
 
 		}
 	
+		if (query.startsWith("SELECT * FROM chandra.chandra_table")) {
+			
+			//starting the mapping block
+			out.write("<VODML>\n");
+			
+			String fileName = "vizier_ChandraCSC2-test-votable.mango.config.json";
+			FileGetter getter = new FileGetter(fileName);
+
+		    try {
+		      FileGetter templateGetter = new FileGetter("mango.mapping.xml");
+		      File mangoTemplate = templateGetter.GetFile();
+		      System.out.println("Template loaded correctly");
+		      Document templateDoc = null;
+			  DocumentBuilderFactory factory = null;
+			  factory = DocumentBuilderFactory.newInstance();
+			  DocumentBuilder builder;
+			  builder = factory.newDocumentBuilder();
+			  templateDoc = builder.parse(mangoTemplate);
+			  DocumentTraversal traversal = (DocumentTraversal) templateDoc;
+			  TreeWalker walker = traversal.createTreeWalker(
+					  templateDoc.getDocumentElement(), NodeFilter.SHOW_ELEMENT, null, true);
+			  File jsonFile = getter.GetFile();
+			  ProductMapper mapper = new ProductMapper(jsonFile);
+			  walker.getRoot();
+			  mapper.BuildAnnotations(out,walker,templateDoc);
+			  String finalString = xmlToString(templateDoc); //converting the doc to a string to push it in the buffer
+			  out.write(finalString);
+
+		    } catch (Exception e) {
+		      e.printStackTrace();
+		    }	
+			finally {
+				//closing the mapping block
+				out.write("</VODML>");
+				out.newLine();
+			}
+
+		}
+		
 		out.newLine();
 		
 		// The RESOURCE note MUST have a type "results":	[REQUIRED]

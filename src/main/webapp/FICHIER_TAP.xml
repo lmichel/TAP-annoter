@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<vosi:tableset xmlns:vosi="http://www.ivoa.net/xml/VOSITables/v1.0" xmlns:vod="http://www.ivoa.net/xml/VODataService/v1.1" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.ivoa.net/xml/VODataService/v1.1 http://www.ivoa.net/xml/VODataService/v1.1 http://www.ivoa.net/xml/VOSITables/v1.0 http://vo.ari.uni-heidelberg.de/docs/schemata/VOSITables-v1.0.xsd">
+  <!-- schema Obscore -->
+  <schema>
+  <name>column_grouping</name>
+  <table type="output">
+    <name>column_grouping.column_grouping_table</name>
+    <description>The General Catalogue of Stellar Radial Velocity</description>
+    <!--OBSERVATION INFORMATION (section B.1) -->
+    <!-- DATA DESCRIPTION (section B.3)-->
+    <!-- data identification -->
+    <column>
+      <name>GCRV</name>
+      <description>[1,15106] GCRV (Wilson) running number</description>
+      <ucd>meta.id;meta.main</ucd>
+      <utype></utype>
+      <dataType xsi:type="vod:VOTableType">int</dataType>
+    </column>
+    <column>
+      <name>GC</name>
+      <description>[1,33342]? Boss's General Catalog (I/113) [NULL integer written as an empty string]</description>
+      <ucd>meta.id</ucd>
+      <utype></utype>
+      <dataType xsi:type="vod:VOTableType">int</dataType>
+    </column>
+    <column>
+      <name>HD</name>
+      <description>[1,292630]? Henry Draper Catalog (III/135) [NULL integer written as an empty string]</description>
+      <unit></unit>
+      <ucd>meta.id</ucd>
+      <utype></utype>
+      <dataType xsi:type="vod:VOTableType">int</dataType>
+    </column>
+    <column>
+      <name>RAB1950</name>
+      <description>Right Ascension B1950</description>
+      <unit>h:m:d</unit>
+      <ucd>pos.eq.ra;meta.main</ucd>
+      <utype></utype>
+      <dataType arraysize="7*" extendedType="adql:VARCHAR"
+        xsi:type="vod:VOTableType">char</dataType>
+    </column>
+    <column>
+    <name>DEB1950</name>
+      <description>Declination B1950</description>
+      <unit>d:m:s</unit>
+      <ucd>pos.eq.dec;meta.main</ucd>
+      <utype></utype>
+      <dataType arraysize="6*" extendedType="adql:VARCHAR"
+        xsi:type="vod:VOTableType">char</dataType>
+    </column>
+    <column>
+      <name>mag</name>
+      <description>Visual magnitude (or photographic, see n_mag)</description>
+      <ucd>phot.mag;em.opt.V</ucd>
+      <utype>source:index</utype>
+      <dataType xsi:type="vod:VOTableType">short</dataType>
+    </column>
+    <column>
+      <name>n_mag</name>
+      <description>[PV] Photographic (blue) magnitude, or Variable</description>
+      <ucd>meta.note</ucd>
+      <utype></utype>
+      <dataType xsi:type="vod:VOTableType">char</dataType>
+    </column>
+    <column>
+      <name>pm</name>
+      <description>? Total proper motion [NULL integer written as an empty string]</description>
+      <ucd>pos.pm</ucd>
+      <utype></utype>
+      <dataType xsi:type="vod:VOTableType">short</dataType>
+    </column>
+    <column>
+      <name>SpT</name>
+      <description>Spectral type (5)</description>
+      <ucd>src.spType</ucd>
+      <utype></utype>
+      <dataType arraysize="6*" extendedType="adql:VARCHAR"
+        xsi:type="vod:VOTableType">char</dataType>
+    </column>
+    <column>
+      <name>RV</name>
+      <description>? Heliocentric radial velocity</description>
+      <ucd>spect.dopplerVeloc;pos.heliocentric</ucd>
+      <utype></utype>
+      <dataType extendedType="adql:DOUBLE"
+        xsi:type="vod:VOTableType">double</dataType>
+    </column>
+    <column>
+      <name>q_RV</name>
+      <description>[A-E*] Quality of radial velocity (1)</description>
+      <ucd>meta.code.qual</ucd>
+      <utype></utype>
+      <dataType xsi:type="vod:VOTableType">char</dataType>
+    </column>
+    <column>
+      <name>o_RV</name>
+      <description>Number of plates used for radial velocity</description>
+      <ucd>meta.number</ucd>
+      <utype></utype>
+      <dataType extendedType="adql:SHORT" xsi:type="vod:VOTableType">short</dataType>
+    </column>
+    <column>
+      <name>r_RV</name>
+      <description>Abbreviation of observatory (3)</description>
+      <ucd>meta.ref;pos.frame</ucd>
+      <utype></utype>
+      <dataType arraysize="3*" extendedType="adql:VARCHAR"
+        xsi:type="vod:VOTableType">char</dataType>
+    </column>
+    <column>
+      <name>_ra_icrs</name>
+      <description>Right ascension (ICRS) (computed by VizieR, not part of the original data)</description>
+      <ucd>pos.eq.ra</ucd>
+      <utype></utype>
+      <dataType arraysize="10*" extendedType="adql:VARCHAR"
+        xsi:type="vod:VOTableType">char</dataType>
+    </column>
+    <column>
+      <name>_de_icrs</name>
+      <description>Declination (ICRS) (computed by VizieR, not part of the original data)</description>
+      <ucd>pos.eq.dec</ucd>
+      <utype></utype>
+      <dataType arraysize="9*" extendedType="adql:VARCHAR"
+        xsi:type="vod:VOTableType">char</dataType>
+    </column>
+
+  </table>
+</schema>
+  <schema>
+  <name>chandra</name>
+  <table type="output">
+    <name>chandra.chandra_table</name>
+    <description>Chandra Source Catalog, V2.0; master sources</description>
+
+      <column>
+        <name>2CXO</name>
+        <description>Source name (Jhhmmss.s+ddmmssX) (name)</description>
+        <ucd>meta.id;meta.main</ucd>
+        <utype></utype>
+        <dataType arraysize="15*" extendedType="adql:VARCHAR"
+          xsi:type="vod:VOTableType">char</dataType>
+      </column>
+
+      <column>
+        <name>RAICRS</name>
+        <description>Source position, ICRS right ascension (ra)</description>
+        <ucd>pos.eq.ra;meta.main</ucd>
+        <utype></utype>
+        <dataType extendedType="adql:DOUBLE" xsi:type="vod:VOTableType">double</dataType>
+      </column>
+
+      <column>
+        <name>DEICRS</name>
+        <description>Source position, ICRS declination (dec)</description>
+        <ucd>pos.eq.dec;meta.main</ucd>
+        <utype></utype>
+        <dataType extendedType="adql:DOUBLE" xsi:type="vod:VOTableType">double</dataType>
+      </column>
+
+      <column>
+        <name>r0</name>
+        <description>[0.7/65] Major radius of the 95% confidence level position error ellipse (err_ellipse_r0)</description>
+        <ucd>phys.angSize;pos.errorEllipse</ucd>
+        <utype></utype>
+        <dataType xsi:type="vod:VOTableType">float</dataType>
+      </column>
+
+      <column>
+        <name>r1</name>
+        <description>[0.7/65] Minor radius of the 95% confidence level position error ellipse (err_ellipse_r1)</description>
+        <ucd>phys.angSize;src</ucd>
+        <utype></utype>
+        <dataType xsi:type="vod:VOTableType">float</dataType>
+      </column>
+
+      <column>
+        <name>PA</name>
+        <description>? Position angle (referenced from local true north) of the major axis of the 95% confidence level error ellipse (err_ellipse_ang)</description>
+        <ucd>pos.posAng</ucd>
+        <utype></utype>
+        <dataType xsi:type="vod:VOTableType">float</dataType>
+      </column>
+
+      <column>
+        <name>GLON</name>
+        <description>[-90/90] Source position, Galactic latitude (equinox J2000, epoch J2000) (gal_b)</description>
+        <ucd>pos.galactic.lon</ucd>
+        <dataType extendedType="adql:DOUBLE" xsi:type="vod:VOTableType">double</dataType>
+      </column>
+
+      <column>
+        <name>GLAT</name>
+        <description>[-90/90] Source position, Galactic longitude (equinox J2000, epoch J2000) (gal_b)</description>
+        <ucd>pos.galactic.lat</ucd>
+        <dataType extendedType="adql:DOUBLE" xsi:type="vod:VOTableType">double</dataType>
+      </column>
+
+      <column>
+        <name>Ns</name>
+        <description>[1/15] Number of sources fit simultaneously to compute aperture photometry quantities (phot_nsrcs)</description>
+        <ucd>meta.number</ucd>
+        <dataType xsi:type="vod:VOTableType">short</dataType>
+      </column>
+
+      <column>
+        <name>Fluxb</name>
+        <description>[0/5.5e-10]? Aperture-corrected net energy flux inferred from the source region aperture; ACIS broad (0.5-7.0keV) band, in erg/s/cm^2^ (flux_aper_b) (14)</description>
+        <ucd>phot.flux;em.X-ray</ucd>
+        <dataType extendedType="adql:DOUBLE" xsi:type="vod:VOTableType">double</dataType>
+      </column>
+
+      <column>
+        <name>Fluxh</name>
+        <description>[0/5.4e-10]? Aperture-corrected net energy flux inferred from the source region aperture; ACIS hard (2.0-7.0keV) band in erg/s/cm^2^ (flux_aper_h) (14)</description>
+        <ucd>phot.flux;em.X-ray</ucd>
+        <dataType extendedType="adql:DOUBLE" xsi:type="vod:VOTableType">double</dataType>
+      </column>
+
+      <column>
+        <name>Fluxm</name>
+        <description>[0/1.9e-11]? Aperture-corrected net energy flux inferred from the source region aperture; ACIS medium (1.2-2keV) band in erg/s/cm^2^ (flux_aper_m) (14)</description>
+        <ucd>phot.flux;em.X-ray</ucd>
+        <dataType extendedType="adql:DOUBLE" xsi:type="vod:VOTableType">double</dataType>
+      </column>
+
+      <column>
+        <name>HRhs</name>
+        <description>[-1/1]? ACIS hard-soft (0.5-1.2keV) energy band hardness ratio (hard_hs)</description>
+        <ucd>phot.flux;arith.ratio</ucd>
+        <dataType extendedType="adql:DOUBLE" xsi:type="vod:VOTableType">double</dataType>
+      </column>
+
+      <column>
+        <name>HRms</name>
+        <description>[-1/1]? ACIS medium-soft (0.5-1.2keV) energy band hardness ratio (hard_ms)</description>
+        <ucd>phot.flux;arith.ratio</ucd>
+        <dataType extendedType="adql:DOUBLE" xsi:type="vod:VOTableType">double</dataType>
+      </column>
+    </table>
+  </schema>        
+</vosi:tableset>

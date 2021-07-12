@@ -168,25 +168,33 @@ public class HardnessRatioAppender {
 		this.coordValue = (String) coord.get("value");
 		
 		JSONObject error = (JSONObject) ourMeasure.get("error");
-		JSONObject random = (JSONObject) error.get("random");
 		
-		if (random==null) {
-			this.errorValue="";
-			this.errorUnit="";
+		if (error!=null) {
+			JSONObject random = (JSONObject) error.get("random");
+			
+			if (random==null) {
+				this.errorValue="";
+				this.errorUnit="";
+			}
+			
+			else {
+			this.errorValue = (String) random.get("value");
+			errorValue = errorValue.replace("@","");
+			
+			this.errorUnit = (String) random.get("unit");
+			}
+			
+			if (this.errorUnit==null) {
+				this.errorUnit="";
+			}
+			
+			if (this.errorValue==null) {
+				this.errorValue="";
+			}
 		}
 		
 		else {
-		this.errorValue = (String) random.get("value");
-		errorValue = errorValue.replace("@","");
-		
-		this.errorUnit = (String) random.get("unit");
-		}
-		
-		if (this.errorUnit==null) {
 			this.errorUnit="";
-		}
-		
-		if (this.errorValue==null) {
 			this.errorValue="";
 		}
 	}
