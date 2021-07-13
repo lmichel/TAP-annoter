@@ -1,5 +1,5 @@
    <!--
-   Pseudo filter for the Chandra Medium band 
+   Pseudo filter for the Chandra Medium band min-max 1.2-2.0 keV , effective energy = 1.56 kev
     -->
     <INSTANCE ID="PhotFrame_ACISMedium" dmrole="" dmtype="mango:stcextend.PhotFilter" >
       <ATTRIBUTE dmrole="mango:stcextend.PhotFilter.name" dmtype="ivoa:string" value="ACIS Medium"/>
