@@ -1,5 +1,5 @@
    <!--
-   Pseudo filter for the Chandra Hard band 
+   Pseudo filter for the Chandra Hard band min-max 2.0-7.0 keV , effective energy= 3.8 kev 
     -->
     <INSTANCE ID="PhotFrame_ACISHard" dmrole="" dmtype="mango:stcextend.PhotFilter" >
       <ATTRIBUTE dmrole="mango:stcextend.PhotFilter.name" dmtype="ivoa:string" value="ACIS Hard"/>
