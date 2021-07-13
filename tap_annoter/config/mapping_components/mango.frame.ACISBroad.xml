@@ -1,5 +1,5 @@
    <!--
-   Pseudo filter for the Chandra Broad band 
+   Pseudo filter for the Chandra Broad band min-max 0.5-7.0 keV , effective energy=2.3
     -->
     <INSTANCE ID="PhotFrame_ACISBroad" dmrole="" dmtype="mango:stcextend.PhotFilter" >
       <ATTRIBUTE dmrole="mango:stcextend.PhotFilter.name" dmtype="ivoa:string" value="ACIS Broad"/>
