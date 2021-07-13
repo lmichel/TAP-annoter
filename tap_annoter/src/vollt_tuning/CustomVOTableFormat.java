@@ -2,6 +2,7 @@ package vollt_tuning;
 
 import java.io.*;
 import java.util.HashSet;
+import java.util.regex.Pattern;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -80,12 +81,19 @@ public class CustomVOTableFormat extends VOTableFormat {
 		out.write("<VOTABLE" + VOSerializer.formatAttribute("version", votVersion.getVersionNumber()) + VOSerializer.formatAttribute("xmlns", votVersion.getXmlNamespace()) + VOSerializer.formatAttribute("xmlns:xsi", "http://www.w3.org/2001/XMLSchema-instance") + VOSerializer.formatAttribute("xsi:schemaLocation", votVersion.getXmlNamespace() + " " + votVersion.getSchemaLocation()) + ">");
 		out.newLine();
 		
-		if (query.startsWith("SELECT * FROM column_grouping.column_grouping_table")) {
+		//this is used to get the table name
+		Pattern p = Pattern.compile(" ");
+		String [] splittedQuery = p.split(query);
+		
+		String tableName = splittedQuery[3];
+		tableName = tableName.replace(";","");
+		
+		if (query.startsWith("SELECT * FROM")) {
 			
 			//starting the mapping block
 			out.write("<VODML>\n");
-			
-			String fileName = "column_grouping.column_grouping_table.config.json";
+
+			String fileName = tableName+".mango.config.json";
 			FileGetter getter = new FileGetter(fileName);
 
 		    try {
@@ -119,45 +127,6 @@ public class CustomVOTableFormat extends VOTableFormat {
 
 		}
 	
-		if (query.startsWith("SELECT * FROM chandra.chandra_table")) {
-			
-			//starting the mapping block
-			out.write("<VODML>\n");
-			
-			String fileName = "chandra.chandra_table.mango.config.json";
-			FileGetter getter = new FileGetter(fileName);
-
-		    try {
-		      FileGetter templateGetter = new FileGetter("mango.mapping.xml");
-		      File mangoTemplate = templateGetter.GetFile();
-		      System.out.println("Template loaded correctly");
-		      Document templateDoc = null;
-			  DocumentBuilderFactory factory = null;
-			  factory = DocumentBuilderFactory.newInstance();
-			  DocumentBuilder builder;
-			  builder = factory.newDocumentBuilder();
-			  templateDoc = builder.parse(mangoTemplate);
-			  DocumentTraversal traversal = (DocumentTraversal) templateDoc;
-			  TreeWalker walker = traversal.createTreeWalker(
-					  templateDoc.getDocumentElement(), NodeFilter.SHOW_ELEMENT, null, true);
-			  File jsonFile = getter.GetFile();
-			  ProductMapper mapper = new ProductMapper(jsonFile);
-			  walker.getRoot();
-			  mapper.BuildAnnotations(out,walker,templateDoc);
-			  String finalString = xmlToString(templateDoc); //converting the doc to a string to push it in the buffer
-			  out.write(finalString);
-
-		    } catch (Exception e) {
-		      e.printStackTrace();
-		    }	
-			finally {
-				//closing the mapping block
-				out.write("</VODML>");
-				out.newLine();
-			}
-
-		}
-		
 		out.newLine();
 		
 		// The RESOURCE note MUST have a type "results":	[REQUIRED]

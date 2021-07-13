@@ -1,3 +1,5 @@
+
+
 package mapper;
 
 import org.w3c.dom.Element;
@@ -8,12 +10,19 @@ public class IdentifierAppender {
 	private String identifier;
 	private TreeWalker walker;
 
+	/**
+	 * @param columnName the name of the identifier
+	 * @param walker the walker we need to fill
+	 */
 	public IdentifierAppender(String columnName,TreeWalker walker) {
 	
 		this.identifier = columnName;
 		this.walker = walker;
 	}
 
+	/**
+	 * This methode is modifying the template mango with the right value in the identifier field
+	 */
 	public void appendIdentifier() {
 		
 		walker.setCurrentNode(walker.getRoot());
