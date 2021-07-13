@@ -16,7 +16,7 @@ import utils.FileGetter;
 
 /**
  * @author joann
- *
+ *This class is used to parse the json and add every measure in there
  */
 public class ProductMapper {
 

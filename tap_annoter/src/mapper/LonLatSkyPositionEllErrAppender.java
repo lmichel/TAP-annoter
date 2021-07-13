@@ -1,6 +1,5 @@
 package mapper;
 
-import java.io.BufferedWriter;
 import java.io.File;
 import java.net.URISyntaxException;
 
@@ -20,6 +19,8 @@ public class LonLatSkyPositionEllErrAppender {
 	private JSONObject ourMeasure;
 	private File mangoComponentFile;
 	private TreeWalker walker;
+	
+	/*Components extracted from the json*/
 	private String ucd;
 	private String semantic;
 	private String description;
@@ -35,6 +36,11 @@ public class LonLatSkyPositionEllErrAppender {
 	private String angleUnit;
 	private String errorUnit;
 	
+	/**
+	 * @param json the json configuration file
+	 * @param mango the mapping component file
+	 * @param walker the walker we need to fill
+	 */
 	public LonLatSkyPositionEllErrAppender(JSONObject json, File mango,TreeWalker walker) {
 		
 		this.ourMeasure = json;
@@ -42,6 +48,11 @@ public class LonLatSkyPositionEllErrAppender {
 		this.walker = walker;
 	}
 	
+	/**
+	 * @param templateDoc needed to merge
+	 * 
+	 * This fonction is adding a LonLatSkyPositionEllErr to the walker in order to do the mapping
+	 */
 	public void AppendLonLatSkyPositionEllErr(Document templateDoc) {
 		
 		//we have to get the parameters in the json first
@@ -60,8 +71,6 @@ public class LonLatSkyPositionEllErrAppender {
 		
 		this.setParameters(mangoWalker); //filling the walker with parameters
 		
-		this.goToTableMapping(mangoWalker);//going back to table mapping to add the good node in global walker
-		
 		this.goToCollectionParameters();//going to the right place in the walker we need to fill with mangoWalker
 		
 		this.appendConfig(mangoWalker, templateDoc);//merging mangoWalker in the walker we need to fill
@@ -70,6 +79,9 @@ public class LonLatSkyPositionEllErrAppender {
 		
 	}
 
+	/**
+	 * This function is getting parameters from the json config file
+	 */
 	public void getParameters() {
 		
 		System.out.println("Getting parameters");
@@ -88,7 +100,7 @@ public class LonLatSkyPositionEllErrAppender {
 		
 		JSONObject frame = (JSONObject) this.ourMeasure.get("frame");
 		this.frameName = (String) frame.get("frame");
-		//this.frameEquinox = (String) frame.get("equinox");
+		//this.frameEquinox = (String) frame.get("equinox") (may be useful someday);
 		this.frameEpoch = (String) frame.get("epoch");
 		System.out.println("Got the details of the frame : "+frameName);
 		
@@ -104,7 +116,7 @@ public class LonLatSkyPositionEllErrAppender {
 		JSONArray semiAxis = (JSONArray) randomError.get("semiAxis");
 		this.errMin = (String) semiAxis.get(0);
 		this.errMax = (String) semiAxis.get(1);
-		errMin = errMin.replace("@","");
+		errMin = errMin.replace("@",""); //these lines are used to remove the @ in front of the ref
 		errMax = errMax.replace("@","");
 		this.posAngle = (String) randomError.get("posAngle");
 		posAngle = posAngle.replace("@","");
@@ -113,9 +125,13 @@ public class LonLatSkyPositionEllErrAppender {
 		System.out.println("Got all parameters from error");
 	}
 	
+	/**
+	 * @param mangoComponentWalker the mango component where we are replacing some attributes
+	 * This function is setting the parameter in the walker before adding it to the whole walker
+	 */
 	public void setParameters(TreeWalker mangoComponentWalker) {
 		
-		boolean firstAxis = true;
+		boolean firstAxis = true; //this boolean allows us to know where we are in the component
 		boolean inPosAngle = false;
 		String currentdmrole = "notivoa";
 		
@@ -211,6 +227,10 @@ public class LonLatSkyPositionEllErrAppender {
 
 	}
 	
+	/**
+	 * @param templateDoc needed for merging
+	 * This function adds the global to our walker
+	 */
 	public void setGlobal(Document templateDoc) {
 		
 		FileGetter getter = new FileGetter("mango.frame."+frameName+".xml"); //getting the frame file
@@ -260,6 +280,9 @@ public class LonLatSkyPositionEllErrAppender {
 		}
 	}
 	
+	/**
+	 * @return a boolean to know if the frame we are looking to add is already there
+	 */
 	private boolean areGlobalsSet() {
 
 		goToRoot(walker);//going to root to know where we are

@@ -19,12 +19,15 @@ public class DetectionFlagAppender {
 
 	private JSONObject ourMeasure;
 	private File mangoComponentFile;
+	private TreeWalker walker;
+	
+	/*These components are extracted from the json config file*/
 	private String ucd;
 	private String semantic;
 	private String description;
 	private String frame;
 	private String coordValue;
-	private TreeWalker walker;
+
 	
 	/**
 	 * @param json, the json object representing our measure (with all fields)
@@ -89,8 +92,7 @@ public class DetectionFlagAppender {
 		this.coordValue = (String) coordinate.get("value");
 		coordValue = coordValue.replace("@", "");
 		System.out.println("value :" + coordValue);
-		
-		
+			
 	}
 	
 	/**

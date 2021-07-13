@@ -18,6 +18,8 @@ public class PhotometryAppender {
 	private JSONObject ourMeasure;
 	private File mangoComponentFile;
 	private TreeWalker walker;
+	
+	/*These components are extracted from the json*/
 	private String ucd;
 	private String semantic;
 	private String description;
@@ -28,6 +30,11 @@ public class PhotometryAppender {
 	private String errorUnit;
 	
 	
+	/**
+	 * @param json the json object representing our measure (with all fields)
+	 * @param mangoComponentFile the mapping component.xml
+	 * @param walker the walker we have to fill
+	 */
 	public PhotometryAppender(JSONObject json, File mango,TreeWalker walker) {
 		
 		this.ourMeasure = json;
@@ -58,7 +65,7 @@ public class PhotometryAppender {
 		
 		appendConfig(mangoWalker, templateDoc);//merging mangoWalker in the walker we need to fill
 		
-		System.out.println("Detection flag added");
+		System.out.println("Photometry added");
 		
 	}
 
@@ -127,6 +134,10 @@ public class PhotometryAppender {
 	}
 
 	
+	/**
+	 * @param templateDoc needed to merge
+	 * This method is used to import globals in our walker
+	 */
 	public void setGlobal(Document templateDoc) {
 		
 		FileGetter getter = new FileGetter("mango.frame."+frameName+".xml"); //getting the frame file
@@ -146,6 +157,9 @@ public class PhotometryAppender {
 		}
 	}
 	
+	/**
+	 * This method is used to get parameters from the json file
+	 */
 	public void getParameters() {
 		
 		System.out.println("Getting parameters");
@@ -167,6 +181,8 @@ public class PhotometryAppender {
 		JSONObject error = (JSONObject) this.ourMeasure.get("error");
 		System.out.println("Got error");
 		
+		
+		//This is to handle the null exception, may not be needed is the json config evolves
 		if (error!=null) {
 			JSONObject randomError = (JSONObject) error.get("random");
 			
@@ -182,6 +198,9 @@ public class PhotometryAppender {
 		}
 	}
 	
+	/**
+	 * @return true if the global is already in the block, false otherwise
+	 */
 	public boolean areGlobalsSet() {
 		
 		goToRoot(walker);

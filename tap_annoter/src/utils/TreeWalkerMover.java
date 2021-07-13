@@ -1,3 +1,5 @@
+/* attempt to extend TreeWalker - failed so far but may need to be implemented*/
+
 package utils;
 
 import org.apache.xerces.dom.TreeWalkerImpl;

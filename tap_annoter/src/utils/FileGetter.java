@@ -1,3 +1,5 @@
+/*This class is used to get files*/
+
 package utils;
 
 import java.io.File;

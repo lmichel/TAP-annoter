@@ -17,10 +17,6 @@ import utils.WalkerGetter;
  * @author joann
  *
  */
-/**
- * @author joann
- *
- */
 public class LonLatSkyPositionAppender {
 	
 	private JSONObject ourMeasure;
@@ -32,7 +28,7 @@ public class LonLatSkyPositionAppender {
 	private String reductionStatus;
 	private String frameName;
 	//private String frameEquinox;
-	private String frameEpoch;
+	//private String frameEpoch;
 	private String longitude;
 	private String latitude;
 	private String systematicErrorValue;
@@ -287,7 +283,7 @@ public class LonLatSkyPositionAppender {
 		JSONObject frame = (JSONObject) this.ourMeasure.get("frame");
 		this.frameName = (String) frame.get("frame");
 		//this.frameEquinox = (String) frame.get("equinox");
-		this.frameEpoch = (String) frame.get("epoch");
+		//this.frameEpoch = (String) frame.get("epoch");
 		
 		System.out.println("Got the details of the frame : "+frameName);
 		JSONObject position = (JSONObject) this.ourMeasure.get("position");

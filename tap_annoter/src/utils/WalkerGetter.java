@@ -1,3 +1,5 @@
+/* class used to get a walker */
+
 package utils;
 
 import java.io.File;

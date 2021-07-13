@@ -85,7 +85,7 @@ public class CustomVOTableFormat extends VOTableFormat {
 			//starting the mapping block
 			out.write("<VODML>\n");
 			
-			String fileName = "vizier_grouped_col.mango.config.json";
+			String fileName = "column_grouping.column_grouping_table.config.json";
 			FileGetter getter = new FileGetter(fileName);
 
 		    try {
@@ -124,7 +124,7 @@ public class CustomVOTableFormat extends VOTableFormat {
 			//starting the mapping block
 			out.write("<VODML>\n");
 			
-			String fileName = "vizier_ChandraCSC2-test-votable.mango.config.json";
+			String fileName = "chandra.chandra_table.mango.config.json";
 			FileGetter getter = new FileGetter(fileName);
 
 		    try {
