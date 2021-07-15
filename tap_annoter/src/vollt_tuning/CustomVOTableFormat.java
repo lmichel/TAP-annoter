@@ -230,7 +230,7 @@ public class CustomVOTableFormat extends VOTableFormat {
 	/**
 	 * @param xml the XML string we want to beautify
 	 * @param indent the number of indentations we want
-	 * @return a beautyfied XML string
+	 * @return a beautified XML string
 	 */
 	public static String toPrettyString(String xml, int indent) {
 	    try {
