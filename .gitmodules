@@ -1,3 +1,4 @@
 [submodule "sub_module/vollt"]
 	path = sub_module/vollt
 	url = https://github.com/gmantele/vollt.git
+	ignore = dirty
