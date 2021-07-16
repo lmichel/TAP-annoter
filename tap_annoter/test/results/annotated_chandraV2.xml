@@ -1,0 +1,1106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<VOTABLE version="1.3" xmlns="http://www.ivoa.net/xml/VOTable/v1.3" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.ivoa.net/xml/VOTable/v1.3 http://www.ivoa.net/xml/VOTable/v1.3">
+<VODML>
+<!-- Here starts the mapping block This bloc maps all data contained in the VOTable on the MANGO model. The ModelInstanceInVot syntax 
+        is detailed here https://github.com/ivoa-std/modelinstanceinvot with a lot of snippet here https://github.com/ivoa/modelinstanceinvot-code 
+     --><MODEL_INSTANCE name="Mango" syntax="ModelInstanceInVot" uri="https://github.com/ivoa-std/MANGO/blob/master/vo-dml/mango.vo-dml.xml">
+  <!-- 
+      The GLOBALS block contains all objects with a scope covering all data.
+      This is typically the case for the coordinate Systems 
+      -->
+  <GLOBALS>
+    <INSTANCE ID="SpaceFrame_Galactic" dmtype="coords:SpaceFrame">
+      <INSTANCE dmrole="coords:SpaceFrame.refPosition" dmtype="coords:StdRefLocation">
+        <ATTRIBUTE dmrole="coords:StdRefLocation.position" dmtype="ivoa:string" value="NoSet"/>
+      </INSTANCE>
+      <ATTRIBUTE dmrole="coords:SpaceFrame.spaceRefFrame" dmtype="ivoa:string" value="Galactic"/>
+      <ATTRIBUTE dmrole="coords:SpaceFrame.equinox" dmtype="coords:Epoch" value="NoSet"/>
+    </INSTANCE>
+    <INSTANCE ID="SpaceFrame_ICRS" dmtype="coords:SpaceFrame">
+      <INSTANCE dmrole="coords:SpaceFrame.refPosition" dmtype="coords:StdRefLocation">
+        <ATTRIBUTE dmrole="coords:StdRefLocation.position" dmtype="ivoa:string" value="NoSet"/>
+      </INSTANCE>
+      <ATTRIBUTE dmrole="coords:SpaceFrame.spaceRefFrame" dmtype="ivoa:string" value="ICRS"/>
+      <ATTRIBUTE dmrole="coords:SpaceFrame.equinox" dmtype="coords:Epoch" value="NoSet"/>
+    </INSTANCE>
+    <INSTANCE ID="PhotFrame_ACISBroad" dmrole="" dmtype="mango:stcextend.PhotFilter">
+      <ATTRIBUTE dmrole="mango:stcextend.PhotFilter.name" dmtype="ivoa:string" value="ACIS Broad"/>
+      <ATTRIBUTE dmrole="mango:stcextend.PhotFilter.zeroPointFlux" dmtype="ivoa:real" value="NoSet"/>
+      <ATTRIBUTE dmrole="mango:stcextend.PhotFilter.magnitudeSystem" dmtype="ivoa:string" value="Chandra"/>
+      <ATTRIBUTE dmrole="mango:stcextend.PhotFilter.effectiveWavlength" dmtype="ivoa:real" value="2.3"/>
+      <ATTRIBUTE dmrole="mango:stcextend.PhotFilter.unit" dmtype="ivoa:string" value="KeV"/>
+      <ATTRIBUTE dmrole="mango:stcextend.PhotFilter.bandWidth" dmtype="ivoa:real" value="6.5"/>
+    </INSTANCE>
+    <INSTANCE ID="PhotFrame_ACISHard" dmrole="" dmtype="mango:stcextend.PhotFilter">
+      <ATTRIBUTE dmrole="mango:stcextend.PhotFilter.name" dmtype="ivoa:string" value="ACIS Hard"/>
+      <ATTRIBUTE dmrole="mango:stcextend.PhotFilter.zeroPointFlux" dmtype="ivoa:real" value="NoSet"/>
+      <ATTRIBUTE dmrole="mango:stcextend.PhotFilter.magnitudeSystem" dmtype="ivoa:string" value="Chandra"/>
+      <ATTRIBUTE dmrole="mango:stcextend.PhotFilter.effectiveWavlength" dmtype="ivoa:real" value="3.8"/>
+      <ATTRIBUTE dmrole="mango:stcextend.PhotFilter.unit" dmtype="ivoa:string" value="KeV"/>
+      <ATTRIBUTE dmrole="mango:stcextend.PhotFilter.bandWidth" dmtype="ivoa:real" value="5.0"/>
+    </INSTANCE>
+    <INSTANCE ID="PhotFrame_ACISMedium" dmrole="" dmtype="mango:stcextend.PhotFilter">
+      <ATTRIBUTE dmrole="mango:stcextend.PhotFilter.name" dmtype="ivoa:string" value="ACIS Medium"/>
+      <ATTRIBUTE dmrole="mango:stcextend.PhotFilter.zeroPointFlux" dmtype="ivoa:real" value="NotSet"/>
+      <ATTRIBUTE dmrole="mango:stcextend.PhotFilter.magnitudeSystem" dmtype="ivoa:string" value="Chandra"/>
+      <ATTRIBUTE dmrole="mango:stcextend.PhotFilter.effectiveWavlength" dmtype="ivoa:real" value="1.56"/>
+      <ATTRIBUTE dmrole="mango:stcextend.PhotFilter.unit" dmtype="ivoa:string" value="KeV"/>
+      <ATTRIBUTE dmrole="mango:stcextend.PhotFilter.bandWidth" dmtype="ivoa:real" value="1.8"/>
+    </INSTANCE>
+    <INSTANCE ID="PhotFrame_ACISSoft" dmrole="" dmtype="mango:stcextend.PhotFilter">
+      <ATTRIBUTE dmrole="mango:stcextend.PhotFilter.name" dmtype="ivoa:string" value="ACIS Soft"/>
+      <ATTRIBUTE dmrole="mango:stcextend.PhotFilter.zeroPointFlux" dmtype="ivoa:real" value="NoSet"/>
+      <ATTRIBUTE dmrole="mango:stcextend.PhotFilter.magnitudeSystem" dmtype="ivoa:string" value="Chandra"/>
+      <ATTRIBUTE dmrole="mango:stcextend.PhotFilter.effectiveWavlength" dmtype="ivoa:real" value="1.2"/>
+      <ATTRIBUTE dmrole="mango:stcextend.PhotFilter.unit" dmtype="ivoa:string" value="KeV"/>
+      <ATTRIBUTE dmrole="mango:stcextend.PhotFilter.bandWidth" dmtype="ivoa:real" value="0.7"/>
+    </INSTANCE>
+    <INSTANCE ID="PhotFrame_ACISHRSoftHard" dmrole="" dmtype="mango:stcextend.HRFrame">
+      <INSTANCE dmref="PhotFrame_ACISSoft" dmrole="mango:stcextend.HRFrame.low"/>
+      <INSTANCE dmref="PhotFrame_ACISHard" dmrole="mango:stcextend.HRFrame.high"/>
+    </INSTANCE>
+    <INSTANCE ID="PhotFrame_ACISHRMediumHard" dmrole="" dmtype="mango:stcextend.HRFrame">
+      <INSTANCE dmref="PhotFrame_ACISMedium" dmrole="mango:stcextend.HRFrame.low"/>
+      <INSTANCE dmref="PhotFrame_ACISHard" dmrole="mango:stcextend.HRFrame.high"/>
+    </INSTANCE>
+  </GLOBALS>
+  <!-- 
+      This block maps the data of the table identified as "Results" 
+      -->
+  <TABLE_MAPPING tableref="Results">
+    <!-- 
+        The table contain a set of Mango instances, this is why we have COLLECTION at the top level
+        -->
+    <COLLECTION dmrole="root">
+      <TABLE_ROW_TEMPLATE>
+        <INSTANCE dmrole="root" dmtype="mango:MangoObject">
+          <!--
+                      Collection of the complex data attached to the source
+                      -->
+          <ATTRIBUTE dmrole="mango:MangoObject.identifier" dmtype="ivoa:string" ref="2CXO"/>
+          <COLLECTION dmrole="mango:MangoObject.associatedData"/>
+          <!--
+                      Collection of the parameters attached to the source
+                      Each child INSTANCE maps one parameter
+                      -->
+          <COLLECTION dmrole="mango:MangoObject.parameters">
+            <INSTANCE dmrole="mango:MangoObject.parameters" dmtype="mango:Parameter">
+              <ATTRIBUTE dmrole="mango:Parameter.semantic" dmtype="ivoa:string" value="#position.lonlat"/>
+              <ATTRIBUTE dmrole="mango:Parameter.ucd" dmtype="ivoa:string" value="pos.galactic"/>
+              <ATTRIBUTE dmrole="mango:Parameter.description" dmtype="ivoa:string" value="Source position"/>
+              <ATTRIBUTE dmrole="mango:Parameter.reductionStatus" dmtype="ivoa:string" value="Corrected"/>
+              <INSTANCE dmrole="mango:Parameter.measure" dmtype="mango:stcextend.LonLatSkyPosition">
+                <INSTANCE dmrole="mango:stcextend.LonLatSkyPosition.coord" dmtype="mango:stcextend.LonLatPoint">
+                  <ATTRIBUTE dmrole="mango:stcextend.LonLatPoint.longitude" dmtype="ivoa:real" ref="GLON"/>
+                  <ATTRIBUTE dmrole="mango:stcextend.LonLatPoint.latitude" dmtype="ivoa:real" ref="GLAT"/>
+                  <INSTANCE dmref="SpaceFrame_Galactic" dmrole="coords:Coordinate.coordSys"/>
+                </INSTANCE>
+                <INSTANCE dmrole="meas:Measure.error" dmtype="meas:Error">
+                  <INSTANCE dmrole="meas:Error.statError" dmtype="meas:Ellipse">
+                    <COLLECTION dmrole="meas:Ellipse.semiAxes" size="2">
+                      <INSTANCE dmrole="meas:Ellipse.semiAxis" dmtype="ivoa:RealQuantity">
+                        <ATTRIBUTE dmrole="ivoa:RealQuantity.value" dmtype="ivoa:real" ref="r0"/>
+                        <ATTRIBUTE dmrole="ivoa:Quantity.unit" dmtype="ivoa:Unit" ref=""/>
+                      </INSTANCE>
+                      <INSTANCE dmrole="meas:Ellipse.semiAxis" dmtype="ivoa:RealQuantity">
+                        <ATTRIBUTE dmrole="ivoa:RealQuantity.value" dmtype="ivoa:real" ref="r1"/>
+                        <ATTRIBUTE dmrole="ivoa:Quantity.unit" dmtype="ivoa:Unit" ref=""/>
+                      </INSTANCE>
+                    </COLLECTION>
+                    <INSTANCE dmrole="meas:Ellipse.posAngle" dmtype="ivoa:RealQuantity">
+                      <ATTRIBUTE dmrole="ivoa:RealQuantity.value" dmtype="ivoa:real" ref="r1"/>
+                      <ATTRIBUTE dmrole="ivoa:Quantity.unit" dmtype="ivoa:Unit" ref="deg"/>
+                    </INSTANCE>
+                  </INSTANCE>
+                </INSTANCE>
+              </INSTANCE>
+            </INSTANCE>
+            <INSTANCE dmrole="mango:MangoObject.parameters" dmtype="mango:Parameter">
+              <ATTRIBUTE dmrole="mango:Parameter.semantic" dmtype="ivoa:string" value="#position.corrected"/>
+              <ATTRIBUTE dmrole="mango:Parameter.ucd" dmtype="ivoa:string" value=""/>
+              <ATTRIBUTE dmrole="mango:Parameter.description" dmtype="ivoa:string" value="Source sky position"/>
+              <ATTRIBUTE dmrole="mango:Parameter.reductionStatus" dmtype="ivoa:string" value="Corrected"/>
+              <INSTANCE dmrole="mango:Parameter.measure" dmtype="mango:stcextend.LonLatSkyPosition">
+                <INSTANCE dmrole="mango:stcextend.LonLatSkyPosition.coord" dmtype="mango:stcextend.LonLatPoint">
+                  <ATTRIBUTE dmrole="mango:stcextend.LonLatPoint.longitude" dmtype="ivoa:real" ref="RAICRS"/>
+                  <ATTRIBUTE dmrole="mango:stcextend.LonLatPoint.latitude" dmtype="ivoa:real" ref="DEICRS"/>
+                  <INSTANCE dmref="SpaceFrame_ICRS" dmrole="coords:Coordinate.coordSys"/>
+                </INSTANCE>
+                <INSTANCE dmrole="meas:Measure.error" dmtype="meas:Error">
+                  <INSTANCE dmrole="meas:Error.statError" dmtype="meas:Symmetrical">
+                    <INSTANCE dmrole="meas:Symmetrical.radius" dmtype="ivoa:RealQuantity">
+                      <ATTRIBUTE dmrole="ivoa:RealQuantity.value" dmtype="ivoa:real" ref="NotSet"/>
+                      <ATTRIBUTE dmrole="ivoa:Quantity.unit" dmtype="ivoa:Unit" ref="NotSet"/>
+                    </INSTANCE>
+                  </INSTANCE>
+                  <INSTANCE dmrole="meas:Error.sysError" dmtype="meas:Symmetrical">
+                    <INSTANCE dmrole="meas:Symmetrical.radius" dmtype="ivoa:RealQuantity">
+                      <ATTRIBUTE dmrole="ivoa:RealQuantity.value" dmtype="ivoa:real" ref="NotSet"/>
+                      <ATTRIBUTE dmrole="ivoa:Quantity.unit" dmtype="ivoa:Unit" ref="NotSet"/>
+                    </INSTANCE>
+                  </INSTANCE>
+                </INSTANCE>
+              </INSTANCE>
+            </INSTANCE>
+            <INSTANCE dmrole="mango:MangoObject.parameters" dmtype="mango:Parameter">
+              <ATTRIBUTE dmrole="mango:Parameter.semantic" dmtype="ivoa:string" value="#flux.corrected"/>
+              <ATTRIBUTE dmrole="mango:Parameter.ucd" dmtype="ivoa:string" value="phot.flux;em.X-ray"/>
+              <ATTRIBUTE dmrole="mango:Parameter.description" dmtype="ivoa:string" value="[0/5.5e-10]? Aperture-corrected net energy flux inferred from the source region aperture; ACIS broad (0.5-7.0keV) band, in erg/s/cm^2^ (flux_aper_b) (14)"/>
+              <ATTRIBUTE dmrole="mango:Parameter.reductionStatus" dmtype="ivoa:string" value=""/>
+              <INSTANCE dmrole="mango:Parameter.measure" dmtype="mango:stcextend.Photometry">
+                <INSTANCE dmrole="mango:stcextend.Photometry.coord" dmtype="mango:stcextend.PhotometryCoord">
+                  <ATTRIBUTE dmrole="mango:stcextend.PhotometryCoord.luminosity" dmtype="ivoa:real" ref="Fluxb"/>
+                  <INSTANCE dmref="PhotFrame_ACISBroad" dmrole="coords:Coordinate.coordSys"/>
+                </INSTANCE>
+                <INSTANCE dmrole="meas:Measure.error" dmtype="meas:Error">
+                  <INSTANCE dmrole="meas:Error.statError" dmtype="meas:Symmetrical">
+                    <INSTANCE dmrole="meas:Symmetrical.radius" dmtype="ivoa:RealQuantity">
+                      <ATTRIBUTE dmrole="ivoa:RealQuantity.value" dmtype="ivoa:real" ref="NotSet"/>
+                      <ATTRIBUTE dmrole="ivoa:Quantity.unit" dmtype="ivoa:Unit" value="NotSet"/>
+                    </INSTANCE>
+                  </INSTANCE>
+                </INSTANCE>
+              </INSTANCE>
+            </INSTANCE>
+            <INSTANCE dmrole="mango:MangoObject.parameters" dmtype="mango:Parameter">
+              <ATTRIBUTE dmrole="mango:Parameter.semantic" dmtype="ivoa:string" value="#flux.corrected"/>
+              <ATTRIBUTE dmrole="mango:Parameter.ucd" dmtype="ivoa:string" value="phot.flux;em.X-ray"/>
+              <ATTRIBUTE dmrole="mango:Parameter.description" dmtype="ivoa:string" value="[0/5.4e-10]? Aperture-corrected net energy flux inferred from the source region aperture; ACIS hard (2.0-7.0keV) band in erg/s/cm^2^ (flux_aper_h) (14)"/>
+              <ATTRIBUTE dmrole="mango:Parameter.reductionStatus" dmtype="ivoa:string" value=""/>
+              <INSTANCE dmrole="mango:Parameter.measure" dmtype="mango:stcextend.Photometry">
+                <INSTANCE dmrole="mango:stcextend.Photometry.coord" dmtype="mango:stcextend.PhotometryCoord">
+                  <ATTRIBUTE dmrole="mango:stcextend.PhotometryCoord.luminosity" dmtype="ivoa:real" ref="Fluxh"/>
+                  <INSTANCE dmref="PhotFrame_ACISHard" dmrole="coords:Coordinate.coordSys"/>
+                </INSTANCE>
+                <INSTANCE dmrole="meas:Measure.error" dmtype="meas:Error">
+                  <INSTANCE dmrole="meas:Error.statError" dmtype="meas:Symmetrical">
+                    <INSTANCE dmrole="meas:Symmetrical.radius" dmtype="ivoa:RealQuantity">
+                      <ATTRIBUTE dmrole="ivoa:RealQuantity.value" dmtype="ivoa:real" ref="NotSet"/>
+                      <ATTRIBUTE dmrole="ivoa:Quantity.unit" dmtype="ivoa:Unit" value="NotSet"/>
+                    </INSTANCE>
+                  </INSTANCE>
+                </INSTANCE>
+              </INSTANCE>
+            </INSTANCE>
+            <INSTANCE dmrole="mango:MangoObject.parameters" dmtype="mango:Parameter">
+              <ATTRIBUTE dmrole="mango:Parameter.semantic" dmtype="ivoa:string" value="#flux.corrected"/>
+              <ATTRIBUTE dmrole="mango:Parameter.ucd" dmtype="ivoa:string" value="phot.flux;em.X-ray"/>
+              <ATTRIBUTE dmrole="mango:Parameter.description" dmtype="ivoa:string" value="[0/1.9e-11]? Aperture-corrected net energy flux inferred from the source region aperture; ACIS medium (1.2-2keV) band in erg/s/cm^2^ (flux_aper_m) (14)"/>
+              <ATTRIBUTE dmrole="mango:Parameter.reductionStatus" dmtype="ivoa:string" value=""/>
+              <INSTANCE dmrole="mango:Parameter.measure" dmtype="mango:stcextend.Photometry">
+                <INSTANCE dmrole="mango:stcextend.Photometry.coord" dmtype="mango:stcextend.PhotometryCoord">
+                  <ATTRIBUTE dmrole="mango:stcextend.PhotometryCoord.luminosity" dmtype="ivoa:real" ref="Fluxm"/>
+                  <INSTANCE dmref="PhotFrame_ACISMedium" dmrole="coords:Coordinate.coordSys"/>
+                </INSTANCE>
+                <INSTANCE dmrole="meas:Measure.error" dmtype="meas:Error">
+                  <INSTANCE dmrole="meas:Error.statError" dmtype="meas:Symmetrical">
+                    <INSTANCE dmrole="meas:Symmetrical.radius" dmtype="ivoa:RealQuantity">
+                      <ATTRIBUTE dmrole="ivoa:RealQuantity.value" dmtype="ivoa:real" ref="NotSet"/>
+                      <ATTRIBUTE dmrole="ivoa:Quantity.unit" dmtype="ivoa:Unit" value="NotSet"/>
+                    </INSTANCE>
+                  </INSTANCE>
+                </INSTANCE>
+              </INSTANCE>
+            </INSTANCE>
+            <INSTANCE dmrole="mango:MangoObject.parameters" dmtype="mango:Parameter">
+              <ATTRIBUTE dmrole="mango:Parameter.semantic" dmtype="ivoa:string" value="#hardnessratio.computed"/>
+              <ATTRIBUTE dmrole="mango:Parameter.ucd" dmtype="ivoa:string" value="phot.flux;arith.ratio"/>
+              <ATTRIBUTE dmrole="mango:Parameter.description" dmtype="ivoa:string" value="ACIS hard - soft energy band hardness ratio"/>
+              <ATTRIBUTE dmrole="mango:Parameter.reductionStatus" dmtype="ivoa:string" value="Computed"/>
+              <INSTANCE dmrole="mango:Parameter.measure" dmtype="mango:stcextend.HardnessRatio">
+                <INSTANCE dmrole="mango:stcextend.HardnessRatio.coord" dmtype="mango:stcextend.HardnessRatioCoord">
+                  <ATTRIBUTE dmrole="mango:stcextend.HardnessRatioCoord.hardnessRatio" dmtype="ivoa:real" ref="@HRhs"/>
+                  <INSTANCE dmref="@@@@@@" dmrole="coords:Coordinate.coordSys" value="PhotFrame_ACISHRSoftHard"/>
+                </INSTANCE>
+                <INSTANCE dmrole="meas:Measure.error" dmtype="meas:Error">
+                  <INSTANCE dmrole="meas:Error.statError" dmtype="meas:Symmetrical">
+                    <INSTANCE dmrole="meas:Symmetrical.radius" dmtype="ivoa:RealQuantity">
+                      <ATTRIBUTE dmrole="ivoa:RealQuantity.value" dmtype="ivoa:real" value="NotSet"/>
+                      <ATTRIBUTE dmrole="ivoa:Quantity.unit" dmtype="ivoa:Unit" value="NotSet"/>
+                    </INSTANCE>
+                  </INSTANCE>
+                </INSTANCE>
+              </INSTANCE>
+            </INSTANCE>
+            <INSTANCE dmrole="mango:MangoObject.parameters" dmtype="mango:Parameter">
+              <ATTRIBUTE dmrole="mango:Parameter.semantic" dmtype="ivoa:string" value="#hardnessratio.computed"/>
+              <ATTRIBUTE dmrole="mango:Parameter.ucd" dmtype="ivoa:string" value="phot.flux;arith.ratio"/>
+              <ATTRIBUTE dmrole="mango:Parameter.description" dmtype="ivoa:string" value="[-1/1]? ACIS medium-soft (0.5-1.2keV) energy band hardness ratio (hard_ms)"/>
+              <ATTRIBUTE dmrole="mango:Parameter.reductionStatus" dmtype="ivoa:string" value="Computed"/>
+              <INSTANCE dmrole="mango:Parameter.measure" dmtype="mango:stcextend.HardnessRatio">
+                <INSTANCE dmrole="mango:stcextend.HardnessRatio.coord" dmtype="mango:stcextend.HardnessRatioCoord">
+                  <ATTRIBUTE dmrole="mango:stcextend.HardnessRatioCoord.hardnessRatio" dmtype="ivoa:real" ref="@HRms"/>
+                  <INSTANCE dmref="@@@@@@" dmrole="coords:Coordinate.coordSys" value="PhotFrame_ACISHRMediumHard"/>
+                </INSTANCE>
+                <INSTANCE dmrole="meas:Measure.error" dmtype="meas:Error">
+                  <INSTANCE dmrole="meas:Error.statError" dmtype="meas:Symmetrical">
+                    <INSTANCE dmrole="meas:Symmetrical.radius" dmtype="ivoa:RealQuantity">
+                      <ATTRIBUTE dmrole="ivoa:RealQuantity.value" dmtype="ivoa:real" value="NotSet"/>
+                      <ATTRIBUTE dmrole="ivoa:Quantity.unit" dmtype="ivoa:Unit" value="NotSet"/>
+                    </INSTANCE>
+                  </INSTANCE>
+                </INSTANCE>
+              </INSTANCE>
+            </INSTANCE>
+          </COLLECTION>
+        </INSTANCE>
+      </TABLE_ROW_TEMPLATE>
+    </COLLECTION>
+  </TABLE_MAPPING>
+</MODEL_INSTANCE>
+</VODML>
+
+<RESOURCE type="results">
+<INFO name="QUERY_STATUS" value="OK"/>
+<INFO name="PROVIDER" value="CDS"></INFO>
+<INFO name="QUERY" value="SELECT * FROM chandra.chandra_table;"/>
+<TABLE name="result_S1626418594544">
+<FIELD arraysize="*" datatype="char" name="2CXO" ucd="meta.id;meta.main">
+<DESCRIPTION>Source name (Jhhmmss.s+ddmmssX) (name)</DESCRIPTION>
+</FIELD>
+<FIELD datatype="double" name="RAICRS" ucd="pos.eq.ra;meta.main">
+<DESCRIPTION>Source position, ICRS right ascension (ra)</DESCRIPTION>
+</FIELD>
+<FIELD datatype="double" name="DEICRS" ucd="pos.eq.dec;meta.main">
+<DESCRIPTION>Source position, ICRS declination (dec)</DESCRIPTION>
+</FIELD>
+<FIELD datatype="float" name="r0" ucd="phys.angSize;pos.errorEllipse">
+<DESCRIPTION>[0.7/65] Major radius of the 95% confidence level position error ellipse (err_ellipse_r0)</DESCRIPTION>
+</FIELD>
+<FIELD datatype="float" name="r1" ucd="phys.angSize;src">
+<DESCRIPTION>[0.7/65] Minor radius of the 95% confidence level position error ellipse (err_ellipse_r1)</DESCRIPTION>
+</FIELD>
+<FIELD datatype="float" name="PA" ucd="pos.posAng">
+<DESCRIPTION>? Position angle (referenced from local true north) of the major axis of the 95% confidence level error ellipse (err_ellipse_ang)</DESCRIPTION>
+</FIELD>
+<FIELD datatype="double" name="GLON" ucd="pos.galactic.lon">
+<DESCRIPTION>[-90/90] Source position, Galactic latitude (equinox J2000, epoch J2000) (gal_b)</DESCRIPTION>
+</FIELD>
+<FIELD datatype="double" name="GLAT" ucd="pos.galactic.lat">
+<DESCRIPTION>[-90/90] Source position, Galactic longitude (equinox J2000, epoch J2000) (gal_b)</DESCRIPTION>
+</FIELD>
+<FIELD datatype="short" name="Ns" ucd="meta.number">
+<DESCRIPTION>[1/15] Number of sources fit simultaneously to compute aperture photometry quantities (phot_nsrcs)</DESCRIPTION>
+</FIELD>
+<FIELD datatype="double" name="Fluxb" ucd="phot.flux;em.X-ray">
+<DESCRIPTION>[0/5.5e-10]? Aperture-corrected net energy flux inferred from the source region aperture; ACIS broad (0.5-7.0keV) band, in erg/s/cm^2^ (flux_aper_b) (14)</DESCRIPTION>
+</FIELD>
+<FIELD datatype="double" name="Fluxh" ucd="phot.flux;em.X-ray">
+<DESCRIPTION>[0/5.4e-10]? Aperture-corrected net energy flux inferred from the source region aperture; ACIS hard (2.0-7.0keV) band in erg/s/cm^2^ (flux_aper_h) (14)</DESCRIPTION>
+</FIELD>
+<FIELD datatype="double" name="Fluxm" ucd="phot.flux;em.X-ray">
+<DESCRIPTION>[0/1.9e-11]? Aperture-corrected net energy flux inferred from the source region aperture; ACIS medium (1.2-2keV) band in erg/s/cm^2^ (flux_aper_m) (14)</DESCRIPTION>
+</FIELD>
+<FIELD datatype="double" name="HRhs" ucd="phot.flux;arith.ratio">
+<DESCRIPTION>[-1/1]? ACIS hard-soft (0.5-1.2keV) energy band hardness ratio (hard_hs)</DESCRIPTION>
+</FIELD>
+<FIELD datatype="double" name="HRms" ucd="phot.flux;arith.ratio">
+<DESCRIPTION>[-1/1]? ACIS medium-soft (0.5-1.2keV) energy band hardness ratio (hard_ms)</DESCRIPTION>
+</FIELD>
+<DATA>
+<TABLEDATA>
+  <TR>
+    <TD> J165541.6-424937 </TD>
+    <TD>253.92354</TD>
+    <TD>-42.82716</TD>
+    <TD>21.157</TD>
+    <TD>13.738</TD>
+    <TD>61.84</TD>
+    <TD>0.33436</TD>
+    <TD>342.863</TD>
+    <TD>1</TD>
+    <TD>0.0</TD>
+    <TD>0.0</TD>
+    <TD>2.1450854E-14</TD>
+    <TD>-0.99938</TD>
+    <TD>-0.4772</TD>
+  </TR>
+  <TR>
+    <TD> J165643.7-424532 </TD>
+    <TD>254.1822</TD>
+    <TD>-42.758987</TD>
+    <TD>3.141</TD>
+    <TD>2.636</TD>
+    <TD>154.3</TD>
+    <TD>0.229009</TD>
+    <TD>343.035</TD>
+    <TD>1</TD>
+    <TD>5.8276E-14</TD>
+    <TD>5.0320798E-14</TD>
+    <TD>1.0319366E-14</TD>
+    <TD>0.99938</TD>
+    <TD>0.99938</TD>
+  </TR>
+  <TR>
+    <TD> J165650.6-423812 </TD>
+    <TD>254.21101</TD>
+    <TD>-42.63669</TD>
+    <TD>0.736</TD>
+    <TD>0.724</TD>
+    <TD>133.6</TD>
+    <TD>0.288859</TD>
+    <TD>343.143</TD>
+    <TD>1</TD>
+    <TD>2.4243774E-13</TD>
+    <TD>1.9335512E-13</TD>
+    <TD>3.7717733E-14</TD>
+    <TD>0.35103</TD>
+    <TD>0.12867</TD>
+  </TR>
+  <TR>
+    <TD> J165655.8-423816 </TD>
+    <TD>254.23276</TD>
+    <TD>-42.637962</TD>
+    <TD>0.949</TD>
+    <TD>0.824</TD>
+    <TD>136.0</TD>
+    <TD>0.275568</TD>
+    <TD>343.152</TD>
+    <TD>1</TD>
+    <TD>3.5068404E-14</TD>
+    <TD>3.575742E-14</TD>
+    <TD></TD>
+    <TD>0.99938</TD>
+    <TD>-0.99938</TD>
+  </TR>
+  <TR>
+    <TD> J165649.7-423849 </TD>
+    <TD>254.20747</TD>
+    <TD>-42.647045</TD>
+    <TD>0.714</TD>
+    <TD>0.713</TD>
+    <TD>102.0</TD>
+    <TD>0.284426</TD>
+    <TD>343.134</TD>
+    <TD>1</TD>
+    <TD>4.0781075E-13</TD>
+    <TD>6.733287E-14</TD>
+    <TD>7.378955E-14</TD>
+    <TD>-0.83573</TD>
+    <TD>-0.68707</TD>
+  </TR>
+  <TR>
+    <TD> J165659.9-423630 </TD>
+    <TD>254.24966</TD>
+    <TD>-42.60836</TD>
+    <TD>3.504</TD>
+    <TD>2.449</TD>
+    <TD>126.9</TD>
+    <TD>0.284331</TD>
+    <TD>343.183</TD>
+    <TD>1</TD>
+    <TD>1.03796264E-14</TD>
+    <TD>0.0</TD>
+    <TD>5.0862033E-15</TD>
+    <TD>0.99438</TD>
+    <TD>0.99938</TD>
+  </TR>
+  <TR>
+    <TD> J165658.8-423732 </TD>
+    <TD>254.24521</TD>
+    <TD>-42.625755</TD>
+    <TD>1.595</TD>
+    <TD>1.086</TD>
+    <TD>127.9</TD>
+    <TD>0.276031</TD>
+    <TD>343.168</TD>
+    <TD>1</TD>
+    <TD>1.2494438E-14</TD>
+    <TD>0.0</TD>
+    <TD></TD>
+    <TD>-0.99938</TD>
+    <TD>-0.99938</TD>
+  </TR>
+  <TR>
+    <TD> J165703.7-425442 </TD>
+    <TD>254.2656</TD>
+    <TD>-42.91167</TD>
+    <TD>0.728</TD>
+    <TD>0.718</TD>
+    <TD>18.37</TD>
+    <TD>0.085908</TD>
+    <TD>342.954</TD>
+    <TD>1</TD>
+    <TD>0.0</TD>
+    <TD>0.0</TD>
+    <TD>8.3873216E-14</TD>
+    <TD>-0.99938</TD>
+    <TD>-0.60962</TD>
+  </TR>
+  <TR>
+    <TD> J165719.8-425620 </TD>
+    <TD>254.33292</TD>
+    <TD>-42.939075</TD>
+    <TD>1.402</TD>
+    <TD>1.402</TD>
+    <TD>0.0</TD>
+    <TD>0.030288</TD>
+    <TD>342.963</TD>
+    <TD>1</TD>
+    <TD>0.0</TD>
+    <TD>0.0</TD>
+    <TD>0.0</TD>
+    <TD></TD>
+    <TD></TD>
+  </TR>
+  <TR>
+    <TD> J170103.4-404053 </TD>
+    <TD>255.26422</TD>
+    <TD>-40.68142</TD>
+    <TD>21.055</TD>
+    <TD>19.15</TD>
+    <TD>131.8</TD>
+    <TD>0.882591</TD>
+    <TD>345.166</TD>
+    <TD>1</TD>
+    <TD></TD>
+    <TD></TD>
+    <TD></TD>
+    <TD></TD>
+    <TD></TD>
+  </TR>
+  <TR>
+    <TD> J170046.8-404950 </TD>
+    <TD>255.19508</TD>
+    <TD>-40.830715</TD>
+    <TD>7.445</TD>
+    <TD>4.614</TD>
+    <TD>82.19</TD>
+    <TD>0.832082</TD>
+    <TD>345.016</TD>
+    <TD>1</TD>
+    <TD></TD>
+    <TD></TD>
+    <TD></TD>
+    <TD></TD>
+    <TD></TD>
+  </TR>
+  <TR>
+    <TD> J170127.5-405353 </TD>
+    <TD>255.36491</TD>
+    <TD>-40.898262</TD>
+    <TD>2.123</TD>
+    <TD>1.304</TD>
+    <TD>58.61</TD>
+    <TD>0.689245</TD>
+    <TD>345.041</TD>
+    <TD>1</TD>
+    <TD></TD>
+    <TD></TD>
+    <TD></TD>
+    <TD></TD>
+    <TD></TD>
+  </TR>
+  <TR>
+    <TD> J170128.6-404802 </TD>
+    <TD>255.36938</TD>
+    <TD>-40.800632</TD>
+    <TD>4.112</TD>
+    <TD>3.516</TD>
+    <TD>71.42</TD>
+    <TD>0.746491</TD>
+    <TD>345.121</TD>
+    <TD>1</TD>
+    <TD></TD>
+    <TD></TD>
+    <TD></TD>
+    <TD></TD>
+    <TD></TD>
+  </TR>
+  <TR>
+    <TD> J170116.0-410147 </TD>
+    <TD>255.31694</TD>
+    <TD>-41.029827</TD>
+    <TD>11.187</TD>
+    <TD>7.883</TD>
+    <TD>69.09</TD>
+    <TD>0.637075</TD>
+    <TD>344.915</TD>
+    <TD>1</TD>
+    <TD></TD>
+    <TD></TD>
+    <TD></TD>
+    <TD></TD>
+    <TD></TD>
+  </TR>
+  <TR>
+    <TD> J170142.9-405128 </TD>
+    <TD>255.42906</TD>
+    <TD>-40.857903</TD>
+    <TD>0.745</TD>
+    <TD>0.726</TD>
+    <TD>111.8</TD>
+    <TD>0.675705</TD>
+    <TD>345.103</TD>
+    <TD>1</TD>
+    <TD>8.215799E-14</TD>
+    <TD>8.217902E-14</TD>
+    <TD>0.0</TD>
+    <TD>0.97439</TD>
+    <TD>0.43348</TD>
+  </TR>
+  <TR>
+    <TD> J170144.3-405130 </TD>
+    <TD>255.4347</TD>
+    <TD>-40.858395</TD>
+    <TD>0.71</TD>
+    <TD>0.71</TD>
+    <TD>0.0</TD>
+    <TD>0.672034</TD>
+    <TD>345.105</TD>
+    <TD>1</TD>
+    <TD>1.4859428E-11</TD>
+    <TD>1.4990186E-11</TD>
+    <TD>1.9377136E-13</TD>
+    <TD>0.99188</TD>
+    <TD>0.86071</TD>
+  </TR>
+  <TR>
+    <TD> J170145.7-404924 </TD>
+    <TD>255.44054</TD>
+    <TD>-40.823513</TD>
+    <TD>1.255</TD>
+    <TD>0.827</TD>
+    <TD>138.7</TD>
+    <TD>0.689931</TD>
+    <TD>345.136</TD>
+    <TD>1</TD>
+    <TD>1.0653301E-15</TD>
+    <TD>0.0</TD>
+    <TD>9.652726E-16</TD>
+    <TD>0.19363</TD>
+    <TD>0.53966</TD>
+  </TR>
+  <TR>
+    <TD> J170146.2-405133 </TD>
+    <TD>255.4428</TD>
+    <TD>-40.85917</TD>
+    <TD>0.754</TD>
+    <TD>0.725</TD>
+    <TD>92.69</TD>
+    <TD>0.666715</TD>
+    <TD>345.108</TD>
+    <TD>1</TD>
+    <TD>7.131946E-14</TD>
+    <TD>6.578485E-14</TD>
+    <TD>2.1478382E-15</TD>
+    <TD>0.96939</TD>
+    <TD>0.75953</TD>
+  </TR>
+  <TR>
+    <TD> J170145.7-405148 </TD>
+    <TD>255.44083</TD>
+    <TD>-40.863384</TD>
+    <TD>0.733</TD>
+    <TD>0.729</TD>
+    <TD>68.16</TD>
+    <TD>0.665309</TD>
+    <TD>345.104</TD>
+    <TD>1</TD>
+    <TD>7.483414E-15</TD>
+    <TD>4.001683E-15</TD>
+    <TD>1.4177718E-15</TD>
+    <TD>-0.39225</TD>
+    <TD>-0.52092</TD>
+  </TR>
+  <TR>
+    <TD> J170147.5-404639 </TD>
+    <TD>255.44818</TD>
+    <TD>-40.77761</TD>
+    <TD>3.111</TD>
+    <TD>2.532</TD>
+    <TD>160.8</TD>
+    <TD>0.713493</TD>
+    <TD>345.175</TD>
+    <TD>1</TD>
+    <TD>3.651495E-15</TD>
+    <TD>2.5955489E-15</TD>
+    <TD>9.329123E-16</TD>
+    <TD>-0.82823</TD>
+    <TD>-0.26483</TD>
+  </TR>
+  <TR>
+    <TD> J170154.4-404854 </TD>
+    <TD>255.47694</TD>
+    <TD>-40.815155</TD>
+    <TD>2.395</TD>
+    <TD>2.395</TD>
+    <TD>0.0</TD>
+    <TD>0.673274</TD>
+    <TD>345.159</TD>
+    <TD>1</TD>
+    <TD></TD>
+    <TD></TD>
+    <TD></TD>
+    <TD></TD>
+    <TD></TD>
+  </TR>
+  <TR>
+    <TD> J170156.8-404938 </TD>
+    <TD>255.4868</TD>
+    <TD>-40.82724</TD>
+    <TD>0.78</TD>
+    <TD>0.744</TD>
+    <TD>143.2</TD>
+    <TD>0.659979</TD>
+    <TD>345.154</TD>
+    <TD>1</TD>
+    <TD></TD>
+    <TD></TD>
+    <TD></TD>
+    <TD></TD>
+    <TD></TD>
+  </TR>
+  <TR>
+    <TD> J170205.8-405446 </TD>
+    <TD>255.52452</TD>
+    <TD>-40.913</TD>
+    <TD>2.868</TD>
+    <TD>1.873</TD>
+    <TD>7.818</TD>
+    <TD>0.58491</TD>
+    <TD>345.104</TD>
+    <TD>1</TD>
+    <TD></TD>
+    <TD></TD>
+    <TD></TD>
+    <TD></TD>
+    <TD></TD>
+  </TR>
+  <TR>
+    <TD> J170236.7-405435 </TD>
+    <TD>255.65295</TD>
+    <TD>-40.909843</TD>
+    <TD>18.633</TD>
+    <TD>11.204</TD>
+    <TD>108.4</TD>
+    <TD>0.510055</TD>
+    <TD>345.166</TD>
+    <TD>1</TD>
+    <TD></TD>
+    <TD></TD>
+    <TD></TD>
+    <TD></TD>
+    <TD></TD>
+  </TR>
+  <TR>
+    <TD> J104646.6+123357 </TD>
+    <TD>161.69449</TD>
+    <TD>12.566089</TD>
+    <TD>1.249</TD>
+    <TD>0.963</TD>
+    <TD>90.29</TD>
+    <TD>57.4061</TD>
+    <TD>233.267</TD>
+    <TD>1</TD>
+    <TD>1.05841375E-13</TD>
+    <TD>6.115101E-14</TD>
+    <TD>2.0023833E-14</TD>
+    <TD>-0.13242</TD>
+    <TD>-0.21611</TD>
+  </TR>
+  <TR>
+    <TD> J104639.4+123119 </TD>
+    <TD>161.66454</TD>
+    <TD>12.52207</TD>
+    <TD>13.462</TD>
+    <TD>10.604</TD>
+    <TD>142.6</TD>
+    <TD>57.3583</TD>
+    <TD>233.309</TD>
+    <TD>1</TD>
+    <TD>3.410951E-14</TD>
+    <TD>1.5164197E-14</TD>
+    <TD>6.1012964E-16</TD>
+    <TD>-0.24235</TD>
+    <TD>-0.72954</TD>
+  </TR>
+  <TR>
+    <TD> J104650.8+123245 </TD>
+    <TD>161.71176</TD>
+    <TD>12.545966</TD>
+    <TD>6.526</TD>
+    <TD>4.627</TD>
+    <TD>94.74</TD>
+    <TD>57.4101</TD>
+    <TD>233.315</TD>
+    <TD>1</TD>
+    <TD>0.0</TD>
+    <TD>0.0</TD>
+    <TD>2.0679196E-15</TD>
+    <TD>0.09744</TD>
+    <TD>0.11243</TD>
+  </TR>
+  <TR>
+    <TD> J104655.3+123906 </TD>
+    <TD>161.73051</TD>
+    <TD>12.65176</TD>
+    <TD>5.527</TD>
+    <TD>4.512</TD>
+    <TD>102.6</TD>
+    <TD>57.4805</TD>
+    <TD>233.165</TD>
+    <TD>1</TD>
+    <TD>3.2922903E-14</TD>
+    <TD>3.002861E-14</TD>
+    <TD>1.7905036E-15</TD>
+    <TD>0.34478</TD>
+    <TD>-0.3985</TD>
+  </TR>
+  <TR>
+    <TD> J104656.9+123418 </TD>
+    <TD>161.73712</TD>
+    <TD>12.571694</TD>
+    <TD>5.223</TD>
+    <TD>3.424</TD>
+    <TD>96.49</TD>
+    <TD>57.4446</TD>
+    <TD>233.298</TD>
+    <TD>1</TD>
+    <TD>0.0</TD>
+    <TD>0.0</TD>
+    <TD>4.6050074E-16</TD>
+    <TD>-0.04122</TD>
+    <TD>-0.43098</TD>
+  </TR>
+  <TR>
+    <TD> J104656.5+123106 </TD>
+    <TD>161.73582</TD>
+    <TD>12.518444</TD>
+    <TD>2.186</TD>
+    <TD>1.399</TD>
+    <TD>89.55</TD>
+    <TD>57.4158</TD>
+    <TD>233.382</TD>
+    <TD>1</TD>
+    <TD>1.251291E-14</TD>
+    <TD>6.25892E-15</TD>
+    <TD>3.2590226E-15</TD>
+    <TD>-0.20987</TD>
+    <TD>-0.29232</TD>
+  </TR>
+  <TR>
+    <TD> J104700.2+124453 </TD>
+    <TD>161.7511</TD>
+    <TD>12.748223</TD>
+    <TD>9.263</TD>
+    <TD>8.056</TD>
+    <TD>149.8</TD>
+    <TD>57.5475</TD>
+    <TD>233.03</TD>
+    <TD>1</TD>
+    <TD>5.3647353E-15</TD>
+    <TD>0.0</TD>
+    <TD>1.106191E-15</TD>
+    <TD>-0.73829</TD>
+    <TD>-0.70581</TD>
+  </TR>
+  <TR>
+    <TD> J104702.8+122849 </TD>
+    <TD>161.7618</TD>
+    <TD>12.4805155</TD>
+    <TD>4.164</TD>
+    <TD>2.509</TD>
+    <TD>82.45</TD>
+    <TD>57.4177</TD>
+    <TD>233.466</TD>
+    <TD>1</TD>
+    <TD>0.0</TD>
+    <TD>0.0</TD>
+    <TD>1.1990383E-15</TD>
+    <TD>-0.99938</TD>
+    <TD>-0.45846</TD>
+  </TR>
+  <TR>
+    <TD> J104704.0+123104 </TD>
+    <TD>161.76698</TD>
+    <TD>12.517886</TD>
+    <TD>1.673</TD>
+    <TD>1.296</TD>
+    <TD>79.97</TD>
+    <TD>57.4415</TD>
+    <TD>233.412</TD>
+    <TD>1</TD>
+    <TD>1.8161557E-14</TD>
+    <TD>1.5382418E-14</TD>
+    <TD>2.6377832E-15</TD>
+    <TD>0.30481</TD>
+    <TD>0.04497</TD>
+  </TR>
+  <TR>
+    <TD> J104703.1+122947 </TD>
+    <TD>161.76297</TD>
+    <TD>12.496526</TD>
+    <TD>4.157</TD>
+    <TD>2.654</TD>
+    <TD>107.5</TD>
+    <TD>57.4271</TD>
+    <TD>233.442</TD>
+    <TD>1</TD>
+    <TD>6.082684E-15</TD>
+    <TD>4.0426473E-15</TD>
+    <TD>1.3816351E-15</TD>
+    <TD>-0.99938</TD>
+    <TD>-0.58588</TD>
+  </TR>
+  <TR>
+    <TD> J104705.5+124130 </TD>
+    <TD>161.77315</TD>
+    <TD>12.6919155</TD>
+    <TD>3.13</TD>
+    <TD>1.994</TD>
+    <TD>98.48</TD>
+    <TD>57.5369</TD>
+    <TD>233.141</TD>
+    <TD>1</TD>
+    <TD>1.1506822E-14</TD>
+    <TD>0.0</TD>
+    <TD>1.765469E-15</TD>
+    <TD>-0.50344</TD>
+    <TD>-0.53342</TD>
+  </TR>
+  <TR>
+    <TD> J104707.0+124525 </TD>
+    <TD>161.7795</TD>
+    <TD>12.756966</TD>
+    <TD>5.559</TD>
+    <TD>3.135</TD>
+    <TD>114.8</TD>
+    <TD>57.5758</TD>
+    <TD>233.043</TD>
+    <TD>3</TD>
+    <TD>1.5421185E-14</TD>
+    <TD>1.1913439E-14</TD>
+    <TD>2.924707E-15</TD>
+    <TD>-0.0787</TD>
+    <TD>-0.25359</TD>
+  </TR>
+  <TR>
+    <TD> J104709.1+123054 </TD>
+    <TD>161.78833</TD>
+    <TD>12.515167</TD>
+    <TD>4.484</TD>
+    <TD>4.278</TD>
+    <TD>80.88</TD>
+    <TD>57.4579</TD>
+    <TD>233.436</TD>
+    <TD>1</TD>
+    <TD>3.8212634E-15</TD>
+    <TD>5.553535E-15</TD>
+    <TD>0.0</TD>
+    <TD>0.99938</TD>
+    <TD>-0.99938</TD>
+  </TR>
+  <TR>
+    <TD> J104709.3+122320 </TD>
+    <TD>161.78915</TD>
+    <TD>12.389054</TD>
+    <TD>1.88</TD>
+    <TD>1.22</TD>
+    <TD>86.18</TD>
+    <TD>57.3928</TD>
+    <TD>233.637</TD>
+    <TD>1</TD>
+    <TD>1.6694811E-13</TD>
+    <TD>1.1663486E-13</TD>
+    <TD>2.664167E-14</TD>
+    <TD>0.00125</TD>
+    <TD>-0.20487</TD>
+  </TR>
+  <TR>
+    <TD> J104712.2+124414 </TD>
+    <TD>161.80101</TD>
+    <TD>12.737266</TD>
+    <TD>6.488</TD>
+    <TD>3.777</TD>
+    <TD>112.5</TD>
+    <TD>57.5836</TD>
+    <TD>233.095</TD>
+    <TD>3</TD>
+    <TD>1.4638886E-14</TD>
+    <TD>1.510898E-14</TD>
+    <TD>1.706195E-15</TD>
+    <TD>0.17739</TD>
+    <TD>0.01749</TD>
+  </TR>
+  <TR>
+    <TD> J104710.1+124457 </TD>
+    <TD>161.79216</TD>
+    <TD>12.749228</TD>
+    <TD>4.629</TD>
+    <TD>3.504</TD>
+    <TD>95.81</TD>
+    <TD>57.5824</TD>
+    <TD>233.067</TD>
+    <TD>3</TD>
+    <TD>0.0</TD>
+    <TD>0.0</TD>
+    <TD>2.6655917E-15</TD>
+    <TD>-0.43348</TD>
+    <TD>-0.30606</TD>
+  </TR>
+  <TR>
+    <TD> J104712.5+124626 </TD>
+    <TD>161.8024</TD>
+    <TD>12.774053</TD>
+    <TD>8.994</TD>
+    <TD>5.661</TD>
+    <TD>119.9</TD>
+    <TD>57.6037</TD>
+    <TD>233.037</TD>
+    <TD>1</TD>
+    <TD>2.4975725E-14</TD>
+    <TD>2.1556413E-14</TD>
+    <TD>3.072286E-15</TD>
+    <TD>0.54216</TD>
+    <TD>0.07245</TD>
+  </TR>
+  <TR>
+    <TD> J104714.1+123839 </TD>
+    <TD>161.80887</TD>
+    <TD>12.644292</TD>
+    <TD>2.384</TD>
+    <TD>1.766</TD>
+    <TD>95.72</TD>
+    <TD>57.5421</TD>
+    <TD>233.25</TD>
+    <TD>1</TD>
+    <TD>9.717917E-15</TD>
+    <TD>1.1514899E-14</TD>
+    <TD>0.0</TD>
+    <TD>0.99938</TD>
+    <TD>-0.99938</TD>
+  </TR>
+  <TR>
+    <TD> J104714.8+123937 </TD>
+    <TD>161.81197</TD>
+    <TD>12.66049</TD>
+    <TD>0.765</TD>
+    <TD>0.728</TD>
+    <TD>93.71</TD>
+    <TD>57.5531</TD>
+    <TD>233.228</TD>
+    <TD>1</TD>
+    <TD>3.759018E-13</TD>
+    <TD>1.9532394E-13</TD>
+    <TD>6.768818E-14</TD>
+    <TD>-0.3148</TD>
+    <TD>-0.32605</TD>
+  </TR>
+  <TR>
+    <TD> J104715.4+123530 </TD>
+    <TD>161.81427</TD>
+    <TD>12.59174</TD>
+    <TD>1.387</TD>
+    <TD>0.981</TD>
+    <TD>95.73</TD>
+    <TD>57.5193</TD>
+    <TD>233.339</TD>
+    <TD>1</TD>
+    <TD>7.058761E-15</TD>
+    <TD>2.6666043E-15</TD>
+    <TD>1.7577563E-15</TD>
+    <TD>-0.32605</TD>
+    <TD>-0.29232</TD>
+  </TR>
+  <TR>
+    <TD> J104716.4+123716 </TD>
+    <TD>161.81876</TD>
+    <TD>12.6212</TD>
+    <TD>2.348</TD>
+    <TD>1.263</TD>
+    <TD>97.75</TD>
+    <TD>57.5384</TD>
+    <TD>233.297</TD>
+    <TD>1</TD>
+    <TD>6.09493E-15</TD>
+    <TD>4.6235044E-15</TD>
+    <TD>4.3333186E-16</TD>
+    <TD>0.99938</TD>
+    <TD>0.99938</TD>
+  </TR>
+  <TR>
+    <TD> J104720.5+124122 </TD>
+    <TD>161.83565</TD>
+    <TD>12.68968</TD>
+    <TD>3.23</TD>
+    <TD>1.81</TD>
+    <TD>106.1</TD>
+    <TD>57.5879</TD>
+    <TD>233.203</TD>
+    <TD>1</TD>
+    <TD>9.396399E-15</TD>
+    <TD>7.0437515E-15</TD>
+    <TD>1.585411E-15</TD>
+    <TD>0.36477</TD>
+    <TD>0.11493</TD>
+  </TR>
+  <TR>
+    <TD> J104718.2+122421 </TD>
+    <TD>161.82602</TD>
+    <TD>12.405843</TD>
+    <TD>2.264</TD>
+    <TD>1.71</TD>
+    <TD>62.17</TD>
+    <TD>57.4323</TD>
+    <TD>233.645</TD>
+    <TD>1</TD>
+    <TD>6.569004E-14</TD>
+    <TD>5.493164E-14</TD>
+    <TD>4.5343457E-15</TD>
+    <TD>-0.18988</TD>
+    <TD>-0.30356</TD>
+  </TR>
+  <TR>
+    <TD> J104723.1+122259 </TD>
+    <TD>161.84639</TD>
+    <TD>12.383214</TD>
+    <TD>5.072</TD>
+    <TD>3.155</TD>
+    <TD>61.43</TD>
+    <TD>57.4374</TD>
+    <TD>233.701</TD>
+    <TD>1</TD>
+    <TD>0.0</TD>
+    <TD>0.0</TD>
+    <TD>0.0</TD>
+    <TD></TD>
+    <TD></TD>
+  </TR>
+  <TR>
+    <TD> J104722.0+124325 </TD>
+    <TD>161.84192</TD>
+    <TD>12.723872</TD>
+    <TD>1.616</TD>
+    <TD>1.463</TD>
+    <TD>144.9</TD>
+    <TD>57.6108</TD>
+    <TD>233.155</TD>
+    <TD>1</TD>
+    <TD>7.059652E-15</TD>
+    <TD>3.0782782E-15</TD>
+    <TD>2.4449091E-15</TD>
+    <TD>-0.40849</TD>
+    <TD>-0.2361</TD>
+  </TR>
+  <TR>
+    <TD> J104723.3+124103 </TD>
+    <TD>161.84726</TD>
+    <TD>12.684335</TD>
+    <TD>1.15</TD>
+    <TD>0.84</TD>
+    <TD>95.08</TD>
+    <TD>57.5949</TD>
+    <TD>233.223</TD>
+    <TD>1</TD>
+    <TD>2.3280535E-14</TD>
+    <TD>1.675502E-14</TD>
+    <TD>3.8175203E-15</TD>
+    <TD>-0.21362</TD>
+    <TD>-0.26983</TD>
+  </TR>
+</TABLEDATA>
+</DATA>
+</TABLE>
+</RESOURCE>
+</VOTABLE>

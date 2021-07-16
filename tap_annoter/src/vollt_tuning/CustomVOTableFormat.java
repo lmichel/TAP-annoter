@@ -98,6 +98,7 @@ public class CustomVOTableFormat extends VOTableFormat {
 			out.write("<VODML>\n");
 
 			String fileName = tableName+".mango.config.json";
+			System.out.println("Le filename est ici : " + fileName);
 			FileGetter getter = new FileGetter(fileName);
 
 		    try {
@@ -122,6 +123,8 @@ public class CustomVOTableFormat extends VOTableFormat {
 			  out.write(toPrettyString(finalString,2));
 
 		    } catch (Exception e) {
+		      out.write("Couldn't resolve mapping : " + e.toString());
+		      out.newLine();
 		      e.printStackTrace();
 		    }	
 			finally {
