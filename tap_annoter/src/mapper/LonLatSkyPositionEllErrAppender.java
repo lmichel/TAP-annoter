@@ -184,6 +184,7 @@ public class LonLatSkyPositionEllErrAppender {
 				
 				case("meas:Ellipse.posAngle"):
 					inPosAngle = true;
+					firstAxis = false;
 					break;
 					
 			}
@@ -201,7 +202,7 @@ public class LonLatSkyPositionEllErrAppender {
 				System.out.println("Setting axis unit");
 			}
 			
-			else if (currentdmrole.equals("ivoa:RealQuantity.value") && !firstAxis) {
+			else if (currentdmrole.equals("ivoa:RealQuantity.value") && !firstAxis && !inPosAngle) {
 				
 				currentElement.setAttribute("ref",this.errMax);
 				System.out.println("Setting second axis");

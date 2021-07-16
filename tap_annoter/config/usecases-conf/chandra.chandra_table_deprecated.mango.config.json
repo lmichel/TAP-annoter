@@ -1,33 +1,9 @@
 {
   "identifier": "2CXO",
 	"parameters": [
-      {
-        "measure": "LonLatSkyPositionEllErr",
-          "ucd": "pos.galactic",
-          "semantic": "#position.lonlat",
-          "description": "Source position",
-          "reductionStatus": "Corrected",
-          "frame": {
-          "frame": "Galactic",
-          "equinox": "null",
-          "epoch": "null"
-      },
-        "position": {
-          "longitude": "@GLON",
-          "latitude": "@GLAT",
-          "unit": "deg"
-        },
-			  "errors": {
-				"random": {
-                    "semiAxis": ["@r0", "@r1"],
-                    "posAngle": "@PA",
-                    "unit": "arcsec",
-                    "angleUnit": "deg"
-				}
-			}
-		},
     {
 			"measure": "LonLatSkyPosition",
+			"ucd": "pos.eq",
 			"semantic": "#position.corrected",
 			"description": "Source sky position",
 			"reductionStatus": "Corrected",
@@ -39,6 +15,60 @@
 			"position": {
 				"latitude": "@DEICRS",
 				"longitude": "@RAICRS",
+				"unit": "deg"
+			},
+			"errors": {}
+		},
+    {
+			"measure": "LonLatSkyPosition",
+			"ucd": "pos.galactic",
+			"semantic": "#position.lonlat",
+			"description": "Source position",
+			"reductionStatus": "Corrected",
+			"frame": {
+				"frame": "Galactic",
+				"equinox": "null",
+				"epoch": "null"
+			},
+			"position": {
+				"longitude": "@GLON",
+				"latitude": "@GLAT",
+				"unit": "deg"
+			},
+			"errors": {}
+		},
+    {
+			"measure": "GenericMeasure",
+			"description": "major radius ro ellipse error at confidence 95% ",
+			"ucd": "phys.angSize;pos.errorEllipse",
+			"semantic": "#error",
+			"reductionStatus": "Computed",
+			"coordinate": {
+				"value": "@r0",
+				"unit": "arcsec"
+			},
+			"errors": {}
+		},
+    {
+			"measure": "GenericMeasure",
+			"description": "minor radius r1 ellipse error at confidence 95% ",
+			"ucd": "phys.angSize;pos.errorEllipse",
+			"semantic": "#error",
+			"reductionStatus": "Computed",
+			"coordinate": {
+				"value": "@r1",
+				"unit": "arcsec"
+			},
+			"errors": {}
+		},
+    {
+			"measure": "GenericMeasure",
+			"description": "Position Angle  ",
+			"ucd": "pos.posAng",
+			"semantic": "position_angle",
+			"reductionStatus": "Computed",
+			"coordinate": {
+				"value": "@PA",
 				"unit": "deg"
 			},
 			"errors": {}
@@ -123,3 +153,5 @@
 
 	}
 }
+
+

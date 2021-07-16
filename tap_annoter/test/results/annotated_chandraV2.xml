@@ -108,7 +108,7 @@
                       </INSTANCE>
                     </COLLECTION>
                     <INSTANCE dmrole="meas:Ellipse.posAngle" dmtype="ivoa:RealQuantity">
-                      <ATTRIBUTE dmrole="ivoa:RealQuantity.value" dmtype="ivoa:real" ref="r1"/>
+                      <ATTRIBUTE dmrole="ivoa:RealQuantity.value" dmtype="ivoa:real" ref="PA"/>
                       <ATTRIBUTE dmrole="ivoa:Quantity.unit" dmtype="ivoa:Unit" ref="deg"/>
                     </INSTANCE>
                   </INSTANCE>
@@ -254,7 +254,7 @@
 <INFO name="QUERY_STATUS" value="OK"/>
 <INFO name="PROVIDER" value="CDS"></INFO>
 <INFO name="QUERY" value="SELECT * FROM chandra.chandra_table;"/>
-<TABLE name="result_S1626418594544">
+<TABLE name="result_S1626425419461">
 <FIELD arraysize="*" datatype="char" name="2CXO" ucd="meta.id;meta.main">
 <DESCRIPTION>Source name (Jhhmmss.s+ddmmssX) (name)</DESCRIPTION>
 </FIELD>
