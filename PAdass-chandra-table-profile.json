@@ -24,8 +24,7 @@
             "@r1"
           ],
           "posAngle": "@PA",
-          "unit": "arcsec",
-          "angleUnit": "deg"
+          "unit": "deg"
         }
       }
     },
