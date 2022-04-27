@@ -1,0 +1,131 @@
+{
+  "identifier": "2CXO",
+  "parameters": [
+    {
+      "measure": "LonLatSkyPositionEllErr",
+      "ucd": "pos.galactic",
+      "semantic": "#position.lonlat",
+      "description": "Source position",
+      "reductionStatus": "Corrected",
+      "frame": {
+        "frame": "Galactic",
+        "equinox": "null",
+        "epoch": "null"
+      },
+      "position": {
+        "longitude": "@GLON",
+        "latitude": "@GLAT",
+        "unit": "deg"
+      },
+      "errors": {
+        "random": {
+          "semiAxis": [
+            "@r0",
+            "@r1"
+          ],
+          "posAngle": "@PA",
+          "unit": "deg"
+        }
+      }
+    },
+    {
+      "measure": "LonLatSkyPosition",
+      "semantic": "#position.corrected",
+      "description": "Source sky position",
+      "reductionStatus": "Corrected",
+      "frame": {
+        "frame": "ICRS",
+        "equinox": "null",
+        "epoch": "null"
+      },
+      "position": {
+        "latitude": "@DEICRS",
+        "longitude": "@RAICRS",
+        "unit": "deg"
+      },
+      "errors": {}
+    },
+    {
+      "measure": "Photometry",
+      "ucd": "phot.flux;em.X-ray",
+      "semantic": "#flux.corrected",
+      "description": "[0/5.5e-10]? Aperture-corrected net energy flux inferred from the source region aperture; ACIS broad (0.5-7.0keV) band, in erg/s/cm^2^ (flux_aper_b) (14)",
+      "reductionStatus": "Corrected",
+      "frame": {
+        "frame": "ACISBroad"
+      },
+      "luminosity": {
+        "luminosity": "@Fluxb",
+        "unit": "mW/m2"
+      },
+      "errors": {}
+    },
+    {
+      "measure": "Photometry",
+      "ucd": "phot.flux;em.X-ray",
+      "semantic": "#flux.corrected",
+      "description": "[0/5.4e-10]? Aperture-corrected net energy flux inferred from the source region aperture; ACIS hard (2.0-7.0keV) band in erg/s/cm^2^ (flux_aper_h) (14)",
+      "reductionStatus": "Corrected",
+      "frame": {
+        "frame": "ACISHard"
+      },
+      "luminosity": {
+        "luminosity": "@Fluxh",
+        "unit": "mW/m2"
+      },
+      "errors": {}
+    },
+    {
+      "measure": "Photometry",
+      "ucd": "phot.flux;em.X-ray",
+      "semantic": "#flux.corrected",
+      "description": "[0/1.9e-11]? Aperture-corrected net energy flux inferred from the source region aperture; ACIS medium (1.2-2keV) band in erg/s/cm^2^ (flux_aper_m) (14)",
+      "reductionStatus": "Corrected",
+      "frame": {
+        "frame": "ACISMedium"
+      },
+      "luminosity": {
+        "luminosity": "@Fluxm",
+        "unit": "mW/m2"
+      },
+      "errors": {}
+    },
+    {
+      "measure": "HardnessRatio",
+      "description": "ACIS hard - soft energy band hardness ratio",
+      "ucd": "phot.flux;arith.ratio",
+      "semantic": "#hardnessratio.computed",
+      "reductionStatus": "Computed",
+      "frame": {
+        "frame": [
+          "ACISSoft",
+          "ACISHard",
+          "ACISHRSoftHard"
+        ]
+      },
+      "coordinate": {
+        "value": "@HRhs"
+      },
+      "errors": {}
+    },
+    {
+      "measure": "HardnessRatio",
+      "description": "[-1/1]? ACIS medium-soft (0.5-1.2keV) energy band hardness ratio (hard_ms)",
+      "ucd": "phot.flux;arith.ratio",
+      "semantic": "#hardnessratio.computed",
+      "reductionStatus": "Computed",
+      "frame": {
+        "frame": [
+          "ACISHard",
+          "ACISMedium",
+          "ACISHRMediumHard"
+        ]
+      },
+      "coordinate": {
+        "value": "@HRms"
+      },
+      "errors": {}
+    }
+  ],
+  "associatedData": {}
+}
